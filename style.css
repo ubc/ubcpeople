@@ -1,0 +1,53 @@
+/*
+Theme Name: UBC People
+Theme URI: 
+Description: People pages based on about.me
+Author: ejackisch
+Author URI: http://ctlt.ubc.ca/
+Version: 1.0
+
+License:
+License URI:
+*/
+body { 
+margin:0; 
+padding:0; 
+height:100%;
+font-family:sans-serif; 
+}
+
+.main-container{
+	width:100%;
+	height:100%;
+}
+
+.profile-container{
+	padding:6px;
+	border-radius:5px;
+}
+
+.handle{
+	width:10px;
+	height:10px;
+	background-color:#f00;
+	float:right;
+}
+
+#editor input{
+width:280px;
+}
+
+#editor textarea{
+	width:400px;
+	height:200px;
+}
+
+.ui-resizable-e {
+    bottom: 0;
+    width: 10px
+}
+
+
+.ui-tabs {
+	font-size:13px !important;
+}
