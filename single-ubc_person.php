@@ -1,7 +1,7 @@
 <?php get_header(); ?>
 
 <link href="<?php echo get_stylesheet_directory_uri(); ?>/fileuploader.css" rel="stylesheet" type="text/css">	
-<script src="<?php echo get_stylesheet_directory_uri(); ?>/fileuploader.js" type="text/javascript"></script>
+<script src="<?php echo get_stylesheet_directory_uri(); ?>/js/fileuploader.js" type="text/javascript"></script>
 
 <?php if ( have_posts() ) : while ( have_posts() ) : the_post(); ?>
 		<?php
@@ -10,7 +10,7 @@
 			if(!$box):
 				$box['x'] = 0;
 				$box['y'] = 0;
-				$box['w'] = 200;
+				$box['w'] = 350;
 			endif;
 
 		?>	
