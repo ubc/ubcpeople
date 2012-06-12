@@ -2,6 +2,8 @@
 add_action( 'init', 'ubcpeople_create_post_type' );
 add_action('wp_ajax_ubcpeople_update_post', 'ubcpeople_update_post');
 
+include 'include/receive-image.php';
+
 function ubcpeople_create_post_type() {
 	register_post_type( 'ubc_person',
 		array(
@@ -19,8 +21,8 @@ function ubcpeople_create_post_type() {
 	);
 }
 
+//ajax 
 function ubcpeople_update_post(){
-
 	$id = $_POST['id'];
 	$title = $_POST['title'];
 	$content = $_POST['content'];
@@ -30,7 +32,24 @@ function ubcpeople_update_post(){
 		'post_title' => $title,
 		'post_content' =>	$content,
 	);
+	
+	wp_update_post( $post_data );
+	update_post_meta($id, 'box_parameters', $_POST['box']);
+	update_post_meta($id, 'background_parameters', $_POST['bg']);
+}
 
-	echo wp_update_post( $post_data );
+
+function ubcpeople_upload_image(){
+	$id = $_POST['id'];
+	$title = $_POST['title'];
+	$content = $_POST['content'];
+	$post_data = array(
+		'ID' => $id,
+		'post_modified' => date('Y-m-d H:i:s'),
+		'post_title' => $title,
+		'post_content' =>	$content,
+	);
+	
+	wp_update_post( $post_data );
 	update_post_meta($id, 'box_parameters', $_POST['box']);
 }
