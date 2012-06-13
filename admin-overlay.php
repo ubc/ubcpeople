@@ -10,6 +10,7 @@
 					<li><a href="#tab-services">External Services</a></li>
 			 </ul>
 			 
+			 
 			 <div id="tab-info">
 					<div class="form-label"><label for="name">Name</label></div>
 					<input type="text" id="name" value="<?php echo the_title(); ?>" />
@@ -21,11 +22,12 @@
 					<input type="text" id="tags" value="<?php echo the_tags(); ?>" />
 			 </div>
 			 
+			 
 			 <div id="tab-images">
 					Background Image<br />
 					
 					<?php foreach($post_meta['images'] as $image):
-						echo $image.'<br />';
+						echo '<a href="" class="change-bg-link">'.$image.'</a><br />';
 					endforeach; ?>
 					
 					<div id="file-uploader-demo1">
@@ -36,10 +38,18 @@
 					</div>
 			 </div>
 			 
+			 
 			 <div id="tab-styles">
-					Heading Font<br />
+					<div class="form-label"><label for="">Heading</label></div>
+					<select>
+					</select>
+					<div class="form-label"><label for="">Text</label></div>
+					<select>
+					</select>
+					<div class="form-label"><label for="">Profile Box color</label></div>
 					<input type="text" />
 			 </div>
+			 
 			 
 			 <div id="tab-services">
 					<?php
@@ -61,26 +71,9 @@
 	</div>
 	
 	<script>        
-        function createUploader(){  
-            var uploader = new qq.FileUploader({
-                element: document.getElementById('file-uploader-demo1'),
-                action: '/wp-admin/admin-ajax.php?action=people_upload_photo&id=<?php the_ID(); ?>',
-						onComplete: function(id, filename, responseJSON){
-							
-							jQuery('html').css("background-image", "url(/wp-content/uploads/people/<?php the_ID(); ?>/"+responseJSON.filename+")");
-							postData.bg.url = "/wp-content/uploads/people/<?php the_ID(); ?>/"+responseJSON.filename;
-							console.log(postData);
-
-							postData.images.push(responseJSON.filename);
-							console.log(postData);
-						},
-                debug: true
-            });           
-        }
-        
-
-       	window.onload = createUploader;    
-       		
-    </script>    
+		window.onload = function(){
+			people_initUploader(<?php echo the_ID(); ?>);  
+		}  
+	</script>
 	
 	<!--End of admin interface-->
