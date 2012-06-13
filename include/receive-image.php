@@ -157,6 +157,9 @@ class qqFileUploader {
 
 add_action('wp_ajax_people_upload_photo', 'people_upload_photo');
 function people_upload_photo(){
+	if(!is_numeric($_GET['id'])):
+		return;
+	endif;
 	// list of valid extensions, ex. array("jpeg", "xml", "bmp")
 	$allowedExtensions = array('jpg', 'jpeg');
 	// max file size in bytes
@@ -164,8 +167,14 @@ function people_upload_photo(){
 
 	$upload_dir_info = wp_upload_dir();
 	
+	$upload_dir = $upload_dir_info['basedir'].'/people/'.$_GET['id'].'/';
+	
+	if(!file_exists($upload_dir)):
+		mkdir($upload_dir);
+	endif;
+	
 	$uploader = new qqFileUploader($allowedExtensions, $sizeLimit);
-	$result = $uploader->handleUpload($upload_dir_info['basedir'].'/people/');
+	$result = $uploader->handleUpload($upload_dir);
 	// to pass data through iframe you will need to encode all html tags
 	echo htmlspecialchars(json_encode($result), ENT_NOQUOTES);
 	die;

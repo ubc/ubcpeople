@@ -3,7 +3,7 @@ add_action( 'init', 'ubcpeople_create_post_type' );
 add_action('wp_ajax_ubcpeople_update_post', 'ubcpeople_update_post');
 
 include 'include/receive-image.php';
-
+include 'include/services/twitter.php';
 
 function ubcpeople_create_post_type() {
 	register_post_type( 'ubc_person',
@@ -40,4 +40,5 @@ function ubcpeople_update_post(){
 	wp_update_post( $post_data );
 	update_post_meta($id, 'box_parameters', $_POST['box']);
 	update_post_meta($id, 'background_parameters', $_POST['bg']);
+	update_post_meta($id, 'images', $_POST['images']);
 }

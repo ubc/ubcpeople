@@ -33,7 +33,11 @@ jQuery(function() {
 			stop:function(event, ui){
 				postData.box.w = event.target.clientWidth;
 			},
-		});
+			resize:function(event, ui){
+				//jquery UI will by default lock the height even if we're only resizing width. force the height to rescale:
+				jQuery(this).css('height','auto');
+			}
+		});	
 		
 	
 	//Events

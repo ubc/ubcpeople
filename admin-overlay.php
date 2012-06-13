@@ -1,3 +1,4 @@
+<?php global $post_meta; ?>
 <!-- Floating admin interface-->
 	<div id="editor" style="position:absolute;right:0;width:500px;height:400px;display:none;">	
 		<form>
@@ -22,7 +23,12 @@
 			 
 			 <div id="tab-images">
 					Background Image<br />
-					<div id="file-uploader-demo1">		
+					
+					<?php foreach($post_meta['images'] as $image):
+						echo $image.'<br />';
+					endforeach; ?>
+					
+					<div id="file-uploader-demo1">
 						<noscript>			
 							<p>Please enable JavaScript to use file uploader.</p>
 							<!-- or put a simple form for upload here -->
@@ -44,7 +50,7 @@
 							endforeach;
 						endif;
 					?>
-					<a>Add New</a>
+					<a>Add More</a>
 			 </div>
 			 
 		</div>
@@ -56,26 +62,25 @@
 	
 	<script>        
         function createUploader(){  
-			
             var uploader = new qq.FileUploader({
                 element: document.getElementById('file-uploader-demo1'),
-                action: '/wp-admin/admin-ajax.php?action=people_upload_photo',
-				onComplete: function(id, filename, responseJSON){
-					
-					jQuery('html').css("background-image", "url(/wp-content/uploads/people/"+responseJSON.filename+")");
-					postData.bg.url = "/wp-content/uploads/people/"+responseJSON.filename;
-				},
+                action: '/wp-admin/admin-ajax.php?action=people_upload_photo&id=<?php the_ID(); ?>',
+						onComplete: function(id, filename, responseJSON){
+							
+							jQuery('html').css("background-image", "url(/wp-content/uploads/people/<?php the_ID(); ?>/"+responseJSON.filename+")");
+							postData.bg.url = "/wp-content/uploads/people/<?php the_ID(); ?>/"+responseJSON.filename;
+							console.log(postData);
+
+							postData.images.push(responseJSON.filename);
+							console.log(postData);
+						},
                 debug: true
             });           
         }
         
-        // in your app create uploader as soon as the DOM is ready
-        // don't wait for the window to load  
-        window.onload = createUploader;    
-		//jQuery.ready(function(){
-		//	createUploader();
-		//});
-		
+
+       	window.onload = createUploader;    
+       		
     </script>    
 	
 	<!--End of admin interface-->
