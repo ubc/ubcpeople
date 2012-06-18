@@ -1,28 +1,24 @@
 <?php get_header(); ?>
-
-<link href="<?php echo get_stylesheet_directory_uri(); ?>/fileuploader.css" rel="stylesheet" type="text/css">	
-<script src="<?php echo get_stylesheet_directory_uri(); ?>/js/fileuploader.js" type="text/javascript"></script>
-
 <?php if ( have_posts() ) : while ( have_posts() ) : the_post(); ?>
+
 	<?php	
-	$post_meta = array();
-	$post_meta['box'] = get_post_meta($post->ID, 'box_parameters', true);
-	$post_meta['images'] = get_post_meta($post->ID, 'images', true);
-	$post_meta['bg'] = get_post_meta($post->ID, 'background_parameters', true);
-	
-	if(!$post_meta['box']):
-		$post_meta['box'] = array('x'=>32, 'y'=>32, 'w'=>300);
-	endif;
-	if(!$post_meta['bg']):
-		//$post_meta['bg'] = new stdClass();
-	endif;
-	
+	//Retrieve page layout meta with default values added where necessary
+	$post_meta = get_post_meta($post->ID, 'people', true);
+	$post_meta = wp_parse_args( 
+		$post_meta,
+		array(
+			'box'=>array('x'=>'32', 'y'=>'32', 'w'=>'300'),
+			'bg'=>array('url'=>''),
+			'images'=>array(),
+		)
+	);
 	?>	
 
 	<script type="text/javascript">
-		postData = <?php echo json_encode($post_meta); ?>;
+		postData = {};
+		postData.meta = <?php echo json_encode($post_meta); ?>;
 		postData.id = <?php echo the_ID(); ?>;
-		jQuery('html').css("background-image", "url(/wp-content/uploads/people/"+postData.id+"/"+postData.bg.url+")");
+		jQuery('html').css("background-image", "url(/wp-content/uploads/people/"+postData.id+"/"+postData.meta.bg.url+")"); //to do: use css
 	</script>
 	
 	<div id="main-container">
@@ -37,14 +33,35 @@
 					endforeach;
 				endif;
 			?>
-			<img width="32" height="32" src="<?php echo get_stylesheet_directory_uri(); ?>/social-icons/png/twitter.png" alt="Facebook" />
+			<a id="open-social-overlay" href="#social-inline-content"><img width="32" height="32" src="<?php echo get_stylesheet_directory_uri(); ?>/social-icons/png/twitter.png" alt="Facebook" /></a>
 			<img width="32" height="32" src="<?php echo get_stylesheet_directory_uri(); ?>/social-icons/png/facebook.png" alt="Facebook" />
-
 		</div>
 	</div>
-	<?php people_twitter(); ?>
+	
+	
+	<div id="social-overlay" style="display:none;">
+		<div id="social-inline-content">
+		
+		
+			<div id="social-tabs">
+				<ul>
+					<li><a href="#tab-twitter">Twitter</a></li>
+					<li><a href="#tab-blah">Blah</a></li>
+				</ul>
+				<div id="tab-twitter">
+					<?php people_twitter(); ?>
+				</div>
+				<div id="tab-blah">
+					
+				</div>
+			</div>	
+			
+		</div>
+	</div>
+	
 	<?php get_template_part('admin-overlay'); ?>
+	
 	<span class="ajax-spinner" style="display:none;float:left;">Saving...</span>
+	
 <?php endwhile;  ?><?php endif; ?>
-
 <?php get_footer(); ?>

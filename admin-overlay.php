@@ -1,6 +1,6 @@
 <?php global $post_meta; ?>
 <!-- Floating admin interface-->
-	<div id="editor" style="position:absolute;right:0;width:500px;height:400px;display:none;">	
+	<div id="editor">	
 		<form>
 		<div id="editor-tabs">
 			 <ul>
@@ -26,9 +26,13 @@
 			 <div id="tab-images">
 					Background Image<br />
 					
-					<?php foreach($post_meta['images'] as $image):
-						echo '<a href="" class="change-bg-link">'.$image.'</a><br />';
-					endforeach; ?>
+					<?php 
+					if($post_meta['images']):
+						foreach($post_meta['images'] as $image):
+							echo '<a href="" class="change-bg-link">'.$image.'</a><br />';
+						endforeach; 
+					endif;
+					?>
 					
 					<div id="file-uploader-demo1">
 						<noscript>			

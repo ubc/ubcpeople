@@ -1,18 +1,17 @@
 <?php
-//3 line xml -> array conversion
 function people_twitter(){
-	$xml = simplexml_load_string(file_get_contents('http://api.twitter.com/1/statuses/user_timeline.rss?screen_name=superejack'));
-	$json = json_encode($xml);
-	$data = json_decode($json,TRUE);
+	if(!($data = get_transient('twitter') ) ):
+		$data = json_decode(file_get_contents('https://twitter.com/status/user_timeline/superejack.json'),TRUE);
+		set_transient('twitter', $data, 60*60);
+	endif;
 	
-	echo $data['channel']['title'].'<br />';
-	$items = $data['channel']['item'];
-	
-	for($i=0;$i<10;$i++):
-		echo $items[$i]['description'].'<br />';
-	endfor;
-	
-	echo '<pre style="float:left;">';
-	print_r($data);
-	echo '</pre>';
+
+	echo '<a href="http://twitter.com/' . $data[0]['user']['screen_name'] . '">Twitter/' . $data[0]['user']['screen_name'] . '</a><br />';
+	echo '<ul>';
+	foreach($data as $tweet):
+		echo '<li>' . $tweet['text'].' - Posted ' . $tweet['created_at'] . '</li>';
+	endforeach; 
+	echo '</ul>';
+	//echo '<pre style="float:left;">';	print_r($data[0]);echo '</pre>';
+
 }

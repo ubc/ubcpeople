@@ -31,11 +31,20 @@ h1{
 	color:#fff;
 }
 
+
 .handle{
 	width:10px;
 	height:10px;
 	background-color:#f00;
 	float:right;
+}
+
+#editor{	
+	position:absolute;
+	right:0;
+	width:500px;
+	height:400px;
+	display:none;
 }
 
 #editor input{

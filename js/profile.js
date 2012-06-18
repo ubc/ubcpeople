@@ -4,7 +4,7 @@ jQuery(function() {
 		people_savePost = function(){
 			postData.title = jQuery("input#name").val();
 			postData.content = jQuery("textarea#bio").val();
-			jQuery.post(ajaxURL, postData);
+			jQuery.post(ajaxURL, 'postData='+JSON.stringify(postData));
 			jQuery("#editor").toggle();
 			return false;
 		}
@@ -15,11 +15,14 @@ jQuery(function() {
 				element: document.getElementById('file-uploader-demo1'),
 				action: '/wp-admin/admin-ajax.php?action=people_upload_photo&id='+post_id,
 				onComplete: function(id, filename, responseJSON){	
+
+					//console.log(postData);
 					jQuery('html').css("background-image", "url(/wp-content/uploads/people/"+post_id+"/"+responseJSON.filename+")");
-					postData.bg.url = "/wp-content/uploads/people/"+post_id+"/"+responseJSON.filename;
-					postData.images.push(responseJSON.filename);
+					postData.meta.bg.url = responseJSON.filename;
+					postData.meta.images.push(responseJSON.filename);
+					//"/wp-content/uploads/people/"+post_id+"/"+
 				},
-				debug: true
+				debug: false
 			});           
         
 		}
@@ -29,19 +32,27 @@ jQuery(function() {
 			return input_string.replace(/(\r\n|\r|\n)/g, "<br />");
 		}
 	
-	
+		
+		
 	//Initialize jQuery UI elements
 		jQuery( "#editor-tabs" ).tabs();
 		
-		
 		jQuery( "#editor" ).draggable();
 		
+		jQuery( "#social-tabs" ).tabs();
+		
+		jQuery('#open-social-overlay').colorbox({
+			inline:true,
+			width:'800px',
+			height:'600px',
+		});
 		
 		jQuery( ".draggable-box" ).draggable({
 			stop:function(event, ui){
-				postData.box.x = event.target.offsetLeft;
-				postData.box.y = event.target.offsetTop;
+				postData.meta.box.x = ui.position.left;
+				postData.meta.box.y = ui.position.top;
 				//console.log(event);
+
 			},
 			//containment: "parent",
 		});
@@ -50,10 +61,10 @@ jQuery(function() {
 		jQuery( ".resizable-box" ).resizable({
 			handles: 'e, w',
 			stop:function(event, ui){
-				postData.box.w = event.target.clientWidth;
+				postData.meta.box.w = event.target.clientWidth;
 			},
 			resize:function(event, ui){
-				//jquery UI will by default lock the height even if we're only resizing width. force the height to rescale:
+				//jquery UI will by default lock the height even if we're only resizing width. force the height to autoadjust:
 				jQuery(this).css('height','auto');
 			}
 		});	
@@ -79,7 +90,7 @@ jQuery(function() {
 		
 		jQuery( ".change-bg-link" ).click(function(){
 			jQuery('html').css("background-image", "url(/wp-content/uploads/people/"+postData.id+"/"+jQuery(this).text()+")");
-			postData.bg.url = jQuery(this).text();
+			postData.meta.bg.url = jQuery(this).text();
 			return false;
 		});
 		

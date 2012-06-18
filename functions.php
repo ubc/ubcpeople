@@ -22,23 +22,23 @@ function ubcpeople_create_post_type() {
 	);
 }
 
-
 /**
  *	Update post via ajax from front-end
  */
 function ubcpeople_update_post(){
-	$id = $_POST['id'];
-	$title = $_POST['title'];
-	$content = $_POST['content'];
+
+	$post = json_decode(stripslashes($_POST['postData']), true);
+	
+	$post_meta = $post['meta'];
+	
 	$post_data = array(
-		'ID' => $id,
+		'ID' => $post['id'],
 		'post_modified' => date('Y-m-d H:i:s'),
-		'post_title' => $title,
-		'post_content' =>	$content,
+		'post_title' => $post['title'],
+		'post_content' =>	$post['content'],
 	);
 	
 	wp_update_post( $post_data );
-	update_post_meta($id, 'box_parameters', $_POST['box']);
-	update_post_meta($id, 'background_parameters', $_POST['bg']);
-	update_post_meta($id, 'images', $_POST['images']);
+	//print_r($post['meta']);
+	update_post_meta($post['id'], 'people', $post['meta']);
 }
