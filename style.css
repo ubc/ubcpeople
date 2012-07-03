@@ -45,10 +45,12 @@ h1{
 	width:500px;
 	height:400px;
 	display:none;
+	border:1px solid #000;
+	background-color:#fff;
 }
 
 #editor input{
-width:280px;
+
 }
 
 #editor textarea{
@@ -56,8 +58,19 @@ width:280px;
 	height:200px;
 }
 
+
+.color-selector{
+	float:left;
+}
+.color-preview{
+	width:20px;
+	height:20px;
+	border:1px solid #000;
+}
+
 .form-label{
 	margin:6px 0;
+	clear:both;
 }
 
 .ui-resizable-e {
@@ -68,4 +81,13 @@ width:280px;
 
 .ui-tabs {
 	font-size:13px !important;
+}
+
+.profile-cct-shell a{
+	color:#fff;
+	text-decoration:none;
+}
+
+.profile-cct-shell.ui-tabs{
+	display:none;
 }

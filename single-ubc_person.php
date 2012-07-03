@@ -4,6 +4,7 @@
 	<?php	
 	//Retrieve page layout meta with default values added where necessary
 	$post_meta = get_post_meta($post->ID, 'people', true);
+	$profile_meta = get_post_meta($post->ID, 'profile_cct', true);
 	$post_meta = wp_parse_args( 
 		$post_meta,
 		array(
@@ -24,12 +25,12 @@
 	<div id="main-container">
 		<div class="profile-container resizable-box draggable-box" style="position:absolute;width:<?php echo $post_meta['box']['w']?>px;background-color:rgba(0,0,0, 0.3);left:<?php echo $post_meta['box']['x']?>px;top:<?php echo $post_meta['box']['y']?>px";>
 			<div id="post-title"><h1><?php echo the_title(); ?></h1></div>
-			<div id="post-content"><p><?php echo nl2br(get_the_content()); ?></p></div>			
+			<div id="post-content"><p><?php echo nl2br(get_the_content()); ?></p></div>	sdfsdfdf		
 			<?php 
-				$services = get_post_meta( $post->ID, 'services', true );
-				if( $services != '' ):
-					foreach( $services as $service):
-						
+				print_r($profile_meta);
+				if( $profile_meta['services'] != '' ):
+					foreach( $profile_meta['services'] as $service):
+						ubcpeople_display_service($service);
 					endforeach;
 				endif;
 			?>
