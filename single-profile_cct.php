@@ -1,5 +1,18 @@
+
 <?php get_header(); ?>
 <?php if ( have_posts() ) : while ( have_posts() ) : the_post(); ?>
+
+<?php
+	//TEMPORARY!
+	//Retrieve FB access code
+		if($_GET['code']):
+			$response =  file_get_contents('https://graph.facebook.com/oauth/access_token?client_id=391752004205525&redirect_uri=' . get_permalink() . '&client_secret=fcafa1b443fc3194707773c0efb37add&code=' . $_GET['code']);
+			$parsed_data = array();
+			parse_str($response, $parsed_data);
+			update_post_meta(get_the_ID(), 'fb_access_token', $parsed_data['access_token']);
+		endif;
+?>
+
 
 	<?php	
 	//Retrieve post meta information

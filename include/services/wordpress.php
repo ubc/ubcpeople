@@ -1,5 +1,5 @@
 <?php
-function ubcpeople_ubc_blog($username){
+function ubcpeople_wordpress_com($username){
 
 //temporary. maybe.
 	$opts = array(
@@ -9,8 +9,8 @@ function ubcpeople_ubc_blog($username){
 	);
 	$context = stream_context_create($opts);
 	
-	$xml = simplexml_load_string(file_get_contents('http://blogs.ubc.ca/'.$username.'/feed/', false, $context));
-	echo '<h2><a href="' . $xml->channel->link . '">UBC Blogs/' . $xml->channel->title . '</a></h2>';
+	$xml = simplexml_load_string(file_get_contents('http://'.$username.'.wordpress.com/feed/', false, $context));
+	echo '<h2><a href="' . $xml->channel->link . '">WordPress.com/' . $xml->channel->title . '</a></h2>';
 	//print_r($xml);
 	foreach($xml->channel->item as $item):
 		echo '<h3><a href="'.$item->link.'">'.$item->title.'</a></h3>';
@@ -22,10 +22,10 @@ function ubcpeople_ubc_blog($username){
 }
 
 
-function ubcpeople_get_icon_ubc_blog(){
+function ubcpeople_get_icon_wordpress_com(){
 	return array(
 		'url'=>'wordpress.png',
-		'id'=>'icon-ubc-blogs',
-		'alt'=>'UBC Blogs',
+		'id'=>'icon-wordpress',
+		'alt'=>'WordPress',
 	);
 }

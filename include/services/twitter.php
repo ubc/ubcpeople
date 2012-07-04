@@ -18,3 +18,11 @@ function ubcpeople_twitter($username){
 	//echo '<pre style="float:left;">';	print_r($data[0]);echo '</pre>';
 
 }
+
+function ubcpeople_get_icon_twitter(){
+	return array(
+		'url'=>'twitter.png',
+		'id'=>'icon-twitter',
+		'alt'=>'Twitter',
+	);
+}

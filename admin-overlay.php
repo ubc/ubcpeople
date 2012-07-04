@@ -100,6 +100,11 @@
 						endif;
 					?>
 					<a>Add More</a>
+					<br /><a href="https://www.facebook.com/dialog/oauth/?
+    client_id=391752004205525
+    &redirect_uri=<?php the_permalink(); ?>
+    &state=todocsrf
+    &scope=user_status">FB Authenticate</a>
 			 </div>
 			 
 		</div>
