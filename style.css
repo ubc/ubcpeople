@@ -20,6 +20,14 @@ h1{
 	margin:10px 0;
 }
 
+h2 a{
+	text-decoration:none;
+}
+
+.social-header{
+	
+}
+
 .main-container{
 	width:100%;
 	height:100%;
@@ -82,6 +90,9 @@ h1{
 .ui-tabs {
 	font-size:13px !important;
 }
+.ui-tabs-panel{
+	padding:0 !important;
+}
 
 .profile-cct-shell a{
 	color:#fff;
@@ -90,4 +101,14 @@ h1{
 
 .profile-cct-shell.ui-tabs{
 	display:none;
+}
+
+.social-header{
+	
+	padding:6px;
+}
+.social-body{
+	
+	padding:6px;
+	padding-top: 0;
 }

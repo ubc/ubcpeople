@@ -9,7 +9,7 @@ include 'include/services/wordpress.php';
 include 'include/services/facebook.php';
 
 
-/**
+/*
  *	Update post via ajax from front-end
  */
 function ubcpeople_update_post(){
@@ -33,7 +33,7 @@ function ubcpeople_update_post(){
 /**
  * ubcpeople_get_service_function()
  * @param $service_name
- * Given a string referring to an external service as an input, checks its validity and returns a string which is used to call functions for that service
+ * Given a string referring to an external service as an input, checks its validity and returns a string which is used to call functions for that service, or false on failure
  */
 function ubcpeople_get_service_function($service_name){
 	$social_options = profile_cct_social_options();
@@ -53,18 +53,23 @@ function ubcpeople_get_service_function($service_name){
 
 /**
  * ubcpeople_display_service_icon()
- * @param $service
+ * @param string $service
  * Given a string, displays an icon linking to that service in a popup
  */
 function ubcpeople_display_service_icon($service){
 	$func = ubcpeople_get_service_function($service['option']);
 	if($func):
-		$icon = call_user_func('ubcpeople_get_icon_' . $func);
+		$icon = call_user_func('ubcpeople_' . $func . '_get_icon');
 		echo '<a class="open-social-overlay" id="' . $icon['id'] . '" href="#social-inline-content"><img width="32" height="32" src="' . get_stylesheet_directory_uri() . '/social-icons/png/' . $icon['url'] . '" alt="' . $icon['alt'] . '" /></a>';
 	endif;
 }
 
 
+/**
+ * ubcpeople_display_service()
+ * Calls the function to display the content for a particular service
+ *
+ */
 function ubcpeople_display_service($service, $username){
 	$func = ubcpeople_get_service_function($service);
 	if($func):
