@@ -5,63 +5,46 @@
 <?php
 	//TEMPORARY! This should go somewhere else
 	//Retrieve FB access code
-		if($_GET['code']):
-			$response =  file_get_contents('https://graph.facebook.com/oauth/access_token?client_id=391752004205525&redirect_uri=' . get_permalink() . '&client_secret=fcafa1b443fc3194707773c0efb37add&code=' . $_GET['code']);
-			$parsed_data = array();
-			parse_str($response, $parsed_data);
-			update_post_meta(get_the_ID(), 'fb_access_token', $parsed_data['access_token']);
-		endif;
+	ubcpeople_facebook_get_access_code(get_permalink(), get_the_ID());
 	//--
 ?>
 
-
-	<?php	
-	//Retrieve post meta information
-	$post_meta = array(
-		'people'=> get_post_meta($post->ID, 'people', true),
-		'profile_cct'=> get_post_meta($post->ID, 'profile_cct', true),
-		);
-		if($post_meta['people']=='')unset($post_meta['people']);
-		if($post_meta['profile_cct']=='')unset($post_meta['profile_cct']);
-		
-	//merge with default values
-	$post_meta = wp_parse_args( 
-		$post_meta,
-		array(
-			'people'=>array(
-				'box'=>array(
-					'x'=>'32', 
-					'y'=>'32', 
-					'w'=>'300',
-				),
-				'styles'=>array(
-					'heading_color'=>'#ff0000', 
-					'heading_font'=>'serif',
-					'text_color'=>'#00ff00', 
-					'text_font'=>'sans-serif',
-					'box_bg'=>'#000',
-					'box_opacity'=>'0.5',
-				),
-				'bg'=>array('url'=>''),
-				'images'=>array(),
-			),
-			'profile_cct'=>array(
-				
-			),
-		)
+<?php	
+//Retrieve post meta information
+$post_meta = array(
+	'people'=> get_post_meta($post->ID, 'people', true),
+	'profile_cct'=> get_post_meta($post->ID, 'profile_cct', true),
 	);
+	if($post_meta['people']=='')unset($post_meta['people']);
+	if($post_meta['profile_cct']=='')unset($post_meta['profile_cct']);
 	
-	//TEMP
-	/*
-	$post_meta['people']['styles'] = array(
-					'heading_color'=>'#ff0000', 
-					'heading_font'=>'serif',
-					'text_color'=>'#00ff00', 
-					'text_font'=>'sans-serif',
-					'box_bg'=>'#000',
-					'box_opacity'=>'0.5',
-				);*/
-	?>	
+//merge with default values
+$post_meta = wp_parse_args( 
+	$post_meta,
+	array(
+		'people'=>array(
+			'box'=>array(
+				'x'=>'32', 
+				'y'=>'32', 
+				'w'=>'300',
+			),
+			'styles'=>array(
+				'heading_color'=>'#ff0000', 
+				'heading_font'=>'serif',
+				'text_color'=>'#00ff00', 
+				'text_font'=>'sans-serif',
+				'box_bg'=>'#000',
+				'box_opacity'=>'0.5',
+			),
+			'bg'=>array('url'=>''),
+			'images'=>array(),
+		),
+		'profile_cct'=>array(
+			
+		),
+	)
+);
+?>	
 
 	<script type="text/javascript">
 		postData = <?php echo json_encode($post_meta); ?>;

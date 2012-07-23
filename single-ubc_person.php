@@ -1,3 +1,6 @@
+No longer in use!  ithink! single-ubc_person.php 
+Use single-profile_cct instead?
+
 <?php get_header(); ?>
 <?php if ( have_posts() ) : while ( have_posts() ) : the_post(); ?>
 

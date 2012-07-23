@@ -1,14 +1,6 @@
 <?php
 function ubcpeople_wordpress_com($username){
-
-//temporary. maybe.
-	$opts = array(
-		'http'=>array(
-			'header'=>'Accept-Encoding: \r\n',
-		),
-	);
-	$context = stream_context_create($opts);
-	$xml = simplexml_load_string(file_get_contents('http://'.$username.'.wordpress.com/feed/', false, $context));
+	$xml = ubcpeople_wordpress_com_get_data($username);
 	?>
 	
 	<div class="social-header">
@@ -22,6 +14,22 @@ function ubcpeople_wordpress_com($username){
 	<?php endforeach; ?>
 	</div>
 <?php }
+
+
+
+function ubcpeople_wordpress_com_get_data($username){
+	//temporary. maybe.
+	$opts = array(
+		'http'=>array(
+			'header'=>'Accept-Encoding: \r\n',
+		),
+	);
+	$context = stream_context_create($opts);
+	
+	$xml = simplexml_load_string(file_get_contents('http://'.$username.'.wordpress.com/feed/', false, $context));
+	
+	return $xml;
+}
 
 
 
