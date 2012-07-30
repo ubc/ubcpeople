@@ -1,14 +1,13 @@
-jQuery(function() {
+jQuery(document).ready(function() {
 	
 	
 		people_savePost = function(){
 			//profileData.title = jQuery("input#name").val();
-			postData.profile_cct.bio.textarea = jQuery("textarea#bio").val();
-			postData.profile_cct.name.first = jQuery("#name-first").val();
-			postData.profile_cct.name.middle = jQuery("#name-middle").val();
-			postData.profile_cct.name.last = jQuery("#name-last").val();
-			console.log(postData.people.styles);
-			jQuery.post(ajaxURL, 'postData='+JSON.stringify(postData.people)+'&profile_cct='+JSON.stringify(postData.profile_cct)+"&id="+postData.id);
+			postData.people.description = jQuery("textarea#bio").val();
+			postData.people.first_name = jQuery("#name-first").val();
+			postData.people.last_name = jQuery("#name-last").val();
+			console.log(postData.people);
+			jQuery.post(ajaxURL, 'people='+JSON.stringify(postData.people)+"&social="+JSON.stringify(postData.social)+"&id="+postData.id);
 			jQuery("#editor").toggle();
 			return false;
 		}
@@ -39,6 +38,7 @@ jQuery(function() {
 		
 		
 	//Initialize jQuery UI elements
+		//console.log(jQuery('#heading-color'));
 		jQuery('#heading-color').ColorPicker({
 			color: '#000000',
 			onChange: function(hsb, hex, rgb){
@@ -95,7 +95,7 @@ jQuery(function() {
 			stop:function(event, ui){
 				postData.people.box.x = ui.position.left;
 				postData.people.box.y = ui.position.top;
-				//console.log(event);
+				console.log(postData);
 
 			},
 			//containment: "parent",
@@ -124,7 +124,7 @@ jQuery(function() {
 			});
 		
 		
-		jQuery("#wp-admin-bar-edit").click(function(){
+		jQuery("#wp-admin-bar-people-edit-profile").click(function(){
 			jQuery("#editor").fadeToggle();
 			return false;
 		});
@@ -141,8 +141,8 @@ jQuery(function() {
 		jQuery( "#bio" ).keydown(function(){
 			setTimeout(function(){jQuery("#post-content p").html(convertLineBreaks(jQuery( "#bio" ).val()), 10)});
 		});
-		jQuery( "#name-first, #name-middle, #name-last" ).keydown(function(){
-			setTimeout(function(){jQuery("#post-title h1").html(jQuery( "#name-first" ).val() +" "+ jQuery( "#name-middle" ).val() +" "+ jQuery( "#name-last" ).val() , 10)});
+		jQuery( "#name-first, #name-last" ).keydown(function(){
+			setTimeout(function(){jQuery("#post-title h1").html(jQuery( "#name-first" ).val() +" "+ jQuery( "#name-last" ).val() , 10)});
 		});
 		
 	

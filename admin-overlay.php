@@ -1,4 +1,7 @@
-<?php global $post_meta; ?>
+<?php 
+	//print_r($usermeta);
+	//print_r($user);
+?>
 <!-- Floating admin interface-->
 	<div id="editor">	
 		<form>
@@ -12,14 +15,13 @@
 	
 			 
 			 <div id="tab-info">
-					<div class="form-label"><label for="name">Name (first, m, last)</label></div>
+					<div class="form-label"><label for="name">Name (first, last)</label></div>
 					
-					<input type="text" id="name-first" value="<?php echo $post_meta['profile_cct']['name']['first']; ?>" size="16" />
-					<input type="text" id="name-middle" value="<?php echo $post_meta['profile_cct']['name']['middle']; ?>" size="2" />
-					<input type="text" id="name-last" value="<?php echo $post_meta['profile_cct']['name']['last']; ?>" size="16" />
+					<input type="text" id="name-first" value="<?php echo $usermeta['first_name']; ?>" size="16" />
+					<input type="text" id="name-last" value="<?php echo $usermeta['last_name']; ?>" size="16" />
 					
 					<div class="form-label"><label for="bio">Bio</label></div>
-					<textarea id="bio"><?php echo $post_meta['profile_cct']['bio']['textarea']; ?></textarea>
+					<textarea id="bio"><?php echo $usermeta['description']; ?></textarea>
 						
 					<div class="form-label"><label for="tags">Tags</label></div>
 					<input type="text" id="tags" value="<?php echo the_tags(); ?>" />
@@ -30,8 +32,8 @@
 					Background Image<br />
 					
 					<?php 
-					if($post_meta['people']['images']):
-						foreach($post_meta['people']['images'] as $image):
+					if($usermeta['people']['images']):
+						foreach($usermeta['people']['images'] as $image):
 							echo '<a href="" class="change-bg-link">'.$image.'</a><br />';
 						endforeach; 
 					endif;
@@ -52,11 +54,13 @@
 						</div>
 						<select id="heading-font">
 							<option value="sans-serif">Sans serif</option>
-							<option value="serif" <?php selected('serif', $post_meta['people']['styles']['heading_font']);?>>Serif</option>
+							<option value="serif" <?php selected('serif', $usermeta['people']['styles']['heading_font']);?>>Serif</option>
 						</select>
 						
 						<script type="text/javascript">
+						jQuery(document).ready(function(){
 							jQuery('#heading-color').ColorPickerSetColor(postData.people.styles.heading_color);
+						});
 						</script>
 					
 					
@@ -68,7 +72,7 @@
 						
 						<select id="text-font">
 							<option value="sans-serif">Sans serif</option>
-							<option value="serif" <?php selected('serif', $post_meta['people']['styles']['text']);?>>Serif</option>
+							<option value="serif" <?php selected('serif', $usermeta['people']['styles']['text_font']);?>>Serif</option>
 						</select>
 					
 					
@@ -91,7 +95,7 @@
 						
 						//people_show_option_box();
 												
-						$services = $post_meta['profile_cct']['social'];
+						$services = $usermeta['social'];
 						if( $services != '' ):
 							foreach( $services as $service):
 								people_show_option_box($service['option']);
@@ -115,9 +119,9 @@
 	</div>
 	
 	<script>        
-		window.onload = function(){
-			people_initUploader(<?php echo the_ID(); ?>);  
-		}  
+		jQuery(document).ready(function(){
+			people_initUploader(<?php echo $user->ID ?>);  
+		}) 
 	</script>
 	
 	<!--End of admin interface-->

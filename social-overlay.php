@@ -1,9 +1,10 @@
 <?php 
-	global $post_meta;
 	$social_array = array(); //Create array of key->value pairs from the social data
-	foreach($post_meta['profile_cct']['social'] as $service):
+	/*
+	foreach($post_meta['people']['social'] as $service):
 		$social_array[$service['option']] = $service['username'];
 	endforeach;
+	*/
 ?>
 	<div id="social-overlay" style="display:none;">
 		<div id="social-inline-content">
@@ -12,10 +13,12 @@
 				<ul>
 					<?php
 						//Create the tab list
+						/*
 						foreach($post_meta['profile_cct']['social'] as $service):
 							echo '<li><a href="#tab-'.str_replace(array(' ','.'),'-', $service['option']).'">'.$service['option'].'</a></li>
 							';
 						endforeach;
+						*/
 					?>
 				</ul>
 				
