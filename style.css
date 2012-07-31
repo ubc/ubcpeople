@@ -125,7 +125,9 @@ th{
 	background-color: #000;
 	color: #fff;
 	text-decoration: none;
-	padding:5px 8px;
+	padding:4px 6px;
+	border:0;
+	font-size:inherit;
 }
 
 .small{

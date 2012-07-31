@@ -4,7 +4,7 @@ jQuery(document).ready(function() {
 	
 		people_savePost = function(event, callback){
 			callback = callback || function(){};
-			console.log(callback);
+			//console.log(callback);
 			//profileData.title = jQuery("input#name").val();
 			postData.people.description = jQuery("textarea#bio").val();
 			postData.people.first_name = jQuery("#name-first").val();
@@ -87,15 +87,25 @@ jQuery(document).ready(function() {
 		
 		jQuery('.open-social-settings').colorbox({
 			inline:true,
-			width:'500px',
-			height:'300px',
+			width:'450px',
+			height:'250px',
 		});
 		
 		
-		jQuery('.submit-add-social').click(function(event){
+		jQuery('a.submit-add-social').click(function(event){
 			
 			var link = jQuery(this).attr('href');
 			people_savePost( event, function(){ window.location = link; } );
+		});
+		
+		jQuery('.add-service-form button').click(function(event){
+			//alert("!");
+			
+			
+			var el = jQuery(this).parent().parent();
+			people_savePost( event, function(){el.submit();} );
+			
+			
 		});
 		
 		
@@ -113,7 +123,6 @@ jQuery(document).ready(function() {
 			stop:function(event, ui){
 				postData.people.box.x = ui.position.left;
 				postData.people.box.y = ui.position.top;
-				console.log(postData);
 
 			},
 			//containment: "parent",

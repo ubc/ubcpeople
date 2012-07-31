@@ -19,6 +19,9 @@ add_action( 'edit_user_profile_update', 'ubcpeople_update_profile' );
 add_action( 'admin_bar_menu', 'ubcpeople_admin_bar_link', 999 );
 add_action( 'template_redirect', 'ubcpeople_include_template' );
 
+add_action('init', 'ubcpeople_submit_add_service');
+add_action('init', 'ubcpeople_submit_remove_service');
+
 include 'include/receive-image.php';
 include 'include/services/twitter.php';
 include 'include/services/ubc_blog.php';
@@ -175,6 +178,13 @@ function ubcpeople_add_service($user_id, $service_name, $service_username){
 }
 
 
+function ubcpeople_remove_service($user_id, $service_name){
+	$social = get_user_meta($user_id, 'social', true);
+	unset($social[$service_name]);
+	update_user_meta($user_id, 'social', $social);
+}
+
+
 /**
  * ubcpeople_get_service_function()
  * @param $service_name
@@ -228,6 +238,7 @@ function ubcpeople_display_service($service, $person_id, $service_username){
 
 function ubcpeople_get_user_info($id){
 	//Retrieve post meta information (this array_map bit is from the codex for get_user_meta) 
+	$user = get_userdata($id);
 	$usermeta = array(
 		'people' => get_user_meta( $id, 'people', true),
 		'social' => get_user_meta( $id, 'social', true),
@@ -235,7 +246,9 @@ function ubcpeople_get_user_info($id){
 		'last_name' => get_user_meta( $id, 'last_name', true),
 		'description' => get_user_meta( $id, 'description', true),
 		'id' => $id,
+		'login' => $user->user_login,
 	);
+	//print_r($user);
 
 	if(isset($usermeta['people']) && empty($usermeta['people']))unset($usermeta['people']);
 	if(isset($usermeta['social']) && empty($usermeta['social']))unset($usermeta['social']);
@@ -278,5 +291,21 @@ function ubcpeople_get_available_services(){
 		'twitter'=>'Twitter',
 		'ubc-blog'=>'UBC Blog',
 		'ubc-wiki' =>'UBC Wiki',
+		'wordpress' =>'WordPress.com',
+		
 	);
+}
+
+function ubcpeople_submit_add_service(){
+	if(isset($_GET['add-service'])):
+		$user = get_user_by('login', $_GET['person']);
+		ubcpeople_add_service($user->ID, $_GET['add-service'], $_GET['service-username']);
+	endif;
+}
+
+function ubcpeople_submit_remove_service(){
+	if(isset($_GET['remove-service'])):
+		$user = get_user_by('login', $_GET['person']);
+		ubcpeople_remove_service($user->ID, $_GET['remove-service']);
+	endif;
 }

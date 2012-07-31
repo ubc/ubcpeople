@@ -103,7 +103,7 @@
 								?>
 								<tr>
 									<td><?php echo $name; ?></td>
-									<td><a class="open-social-settings" href="#add-service-<?php echo $slug; ?>">Remove</a></td>
+									<td><a href="?person=<?php echo $usermeta['login']; ?>&remove-service=<?php echo $slug; ?>">Remove</a></td>
 									<td><input type="checkbox" /></td>
 								</tr>	
 								<?php 

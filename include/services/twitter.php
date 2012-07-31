@@ -1,8 +1,9 @@
 <?php
+add_action('ubcpeople_admin', 'ubcpeople_twitter_init');
 
-function ubcpeople_twitter($username){
+function ubcpeople_twitter($person_id, $service_username){
 
-	$data = ubcpeople_twitter_get_feed($username);
+	$data = ubcpeople_twitter_get_feed($service_username);
 	//  echo '<pre>';print_r($data);echo '</pre>';
 	?>
 	
@@ -42,4 +43,39 @@ function ubcpeople_twitter_get_icon(){
 		'id'=>'icon-twitter',
 		'alt'=>'Twitter',
 	);
+}
+
+
+
+/**
+ *	Output the HTML for the add Twitter window
+ */
+function ubcpeople_twitter_add(){
+	
+	?>
+	<div style="display:none;">
+		<div id="add-service-twitter" class="add-service">
+			<h2>Add Twitter</h2>
+			<form class="add-service-form" method="get" action="">
+				<p>Twitter Username<br /> 	
+					<input type="text" id="service-username" name="service-username" />
+					<input type="hidden" name="add-service" value="twitter" />
+					<input type="hidden" name="person" value="<?php echo $_REQUEST['person']; ?>" />
+					
+				</p>
+				
+				<p><button class="submit-add-social" type="button">Add</button>
+					<span class="small">Any changes you have made will be saved.</span>
+				</p>
+			</form>
+			
+		</div>
+	</div>
+	<?
+}
+
+
+function ubcpeople_twitter_init(){
+	ubcpeople_twitter_add();
+	
 }

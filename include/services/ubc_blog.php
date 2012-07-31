@@ -1,8 +1,13 @@
 <?php
 add_action('ubcpeople_admin', 'ubcpeople_ubc_blog_init');
 
-function ubcpeople_ubc_blog($username){
-	$xml = ubcpeople_ubc_blog_get_data($username);
+/**
+ *	Display the content of the UBC blog social overlay. To be called from main plugin file
+ *	@param int $person_id
+ *	@param string $service_username
+ */
+function ubcpeople_ubc_blog($person_id, $service_username){ 
+	$xml = ubcpeople_ubc_blog_get_data($service_username);
 	?>
 	<div class="social-header">
 		<h2><a href="<?php echo $xml->channel->link ?>">UBC Blogs/<?php echo $xml->channel->title ?></a></h2>
@@ -47,7 +52,7 @@ function ubcpeople_ubc_blog_get_icon(){
 
 
 /**
- *	Output the HTML for the add Facebook window
+ *	Output the HTML for the add Blog window
  */
 function ubcpeople_ubc_blog_add(){
 	
@@ -55,12 +60,19 @@ function ubcpeople_ubc_blog_add(){
 	<div style="display:none;">
 		<div id="add-service-ubc-blog" class="add-service">
 			<h2>Add UBC Blog</h2>
+			<form class="add-service-form" method="get" action="">
+				<p>UBC Blogs Username<br /> 	
+					<input type="text" id="service-username" name="service-username" />
+					<input type="hidden" name="add-service" value="ubc-blog" />
+					<input type="hidden" name="person" value="<?php echo $_REQUEST['person']; ?>" />
+					
+				</p>
+				
+				<p><button class="submit-add-social" type="button">Add</button>
+					<span class="small">Any changes you have made will be saved.</span>
+				</p>
+			</form>
 			
-			<p>UBC Blogs Username<br /> <input type="text" id="ubc-blog-username" name="ubc-blog-username" /></p>
-			
-			<p><a class="submit-add-social" href="https://www.facebook.com/dialog/oauth/?client_id=391752004205525&redirect_uri=<?php echo $current_url ?>&state=todocsrf&scope=user_status">Add</a>
-			<span class="small">Any changes you have made will be saved.</span>
-			</p>
 		</div>
 	</div>
 	<?
