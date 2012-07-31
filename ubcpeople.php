@@ -211,12 +211,12 @@ function ubcpeople_get_service_function($service_name){
  * @param string $service
  * Given a string, displays an icon linking to that service in a popup
  */
-function ubcpeople_display_service_icon($service){
+function ubcpeople_display_service_icon($service, $count){
 	$func = ubcpeople_get_service_function($service);
 	
 	if($func):
 		$icon = call_user_func('ubcpeople_' . $func . '_get_icon');
-		echo '<a class="open-social-overlay" id="' . $icon['id'] . '" href="#social-inline-content"><img width="32" height="32" src="' . plugins_url( '/social-icons/png/' . $icon['url'] , __FILE__ ) . '" alt="' . $icon['alt'] . '" /></a>';
+		echo '<a class="open-social-overlay" id="icon-' . $count. '" href="#social-inline-content"><img width="32" height="32" src="' . plugins_url( '/social-icons/png/' . $icon['url'] , __FILE__ ) . '" alt="' . $icon['alt'] . '" /></a>';
 	endif;
 }
 

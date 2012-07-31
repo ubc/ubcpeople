@@ -32,8 +32,10 @@
 					<?php 
 						
 						if( $usermeta['social'] != '' ):
+							$count = 0;
 							foreach( $usermeta['social'] as $service=>$service_username):
-								ubcpeople_display_service_icon($service);
+								ubcpeople_display_service_icon($service, $count);
+								$count++;
 							endforeach;
 						endif;
 					?>
