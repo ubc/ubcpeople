@@ -4,18 +4,39 @@ Plugin Name: People
 Plugin URI: http://ctlt.ubc.ca
 Description:
 Version: 0.1
-Author: ejackisch
+Author: ejackisch, ctltdev
 Author URI: http://ctlt.ubc.ca
 License: A "Slug" license name e.g. GPL2
 */
 
-add_action('wp_ajax_ubcpeople_update_post', 'ubcpeople_update_post');
-add_action('edit_user_profile', 'ubcpeople_add_extra_profile_fields');
-add_action('show_user_profile', 'ubcpeople_add_extra_profile_fields');
+add_action( 'wp_ajax_ubcpeople_update_post', 'ubcpeople_update_post' );
 
-add_action('template_redirect', 'ubcpeople_include_template');
+add_action( 'edit_user_profile', 'ubcpeople_add_extra_profile_fields' );
+add_action( 'show_user_profile', 'ubcpeople_add_extra_profile_fields' );
+add_action( 'personal_options_update', 'ubcpeople_update_profile' );
+add_action( 'edit_user_profile_update', 'ubcpeople_update_profile' );
 
-function ubcpeople_add_extra_profile_fields($user){ 
+add_action( 'admin_bar_menu', 'ubcpeople_admin_bar_link', 999 );
+add_action( 'template_redirect', 'ubcpeople_include_template' );
+
+include 'include/receive-image.php';
+include 'include/services/twitter.php';
+include 'include/services/ubc_blog.php';
+include 'include/services/ubc_wiki.php';
+include 'include/services/wordpress.php';
+include 'include/services/facebook.php';
+
+
+//called when profile is updated via the backend edit-profile page. Updates the custom fields for this profile in the DB
+function ubcpeople_update_profile($user_id){
+	if( isset( $_POST['public-profile'] ) && $_POST['public-profile'] == 'true' )
+		update_user_meta($user_id, 'public-profile', $_POST['public-profile']);
+	else
+		delete_user_meta($user_id, 'public-profile');
+}
+
+
+function ubcpeople_add_extra_profile_fields($user){
 	?>
 	
 	<h3>Privacy</h3>
@@ -24,15 +45,16 @@ function ubcpeople_add_extra_profile_fields($user){
 			<th>Public Profile</th>
 			<td>
 				<label for="public-profile">
-					<input type="checkbox" id="public-profile" />
+					<input type="checkbox" id="public-profile" name="public-profile" value="true" <?php checked( get_user_meta($user->ID, 'public-profile', true), 'true' ); ?> />
 					Enable public profile page
 				</label>
 			</td>
 		</tr>
 	</table>
 	
-	
+	<!--
 	<h3>Social Feeds</h3>
+	
 	<table class="form-table">
 	
 		<tr>
@@ -61,32 +83,32 @@ function ubcpeople_add_extra_profile_fields($user){
 		</tr>
 		
 	</table>
+	-->
 	<?
 }
 
 
-
-include 'include/receive-image.php';
-include 'include/services/twitter.php';
-include 'include/services/ubc_blog.php';
-include 'include/services/ubc_wiki.php';
-include 'include/services/wordpress.php';
-include 'include/services/facebook.php';
-
-
-function ubcpeople_include_template() {
+//Adds live edit link to admin bar if user has permission
+function ubcpeople_admin_bar_link(){
 	global $wp_admin_bar;
-	if ( !empty( $_GET['person'] ) ):
+	$current_user = wp_get_current_user();
 	
-		//Adds live edit link to admin bar
+	
+	if( isset($_REQUEST['person']) && ( $_REQUEST['person'] == $current_user->user_login || current_user_can('edit_users') ) ):
 		$wp_admin_bar->add_node(
 			array(
 			'id'=>'people-edit-profile',
-			'title'=>'Edit this Page',
-			'href'=>'http://localhost',
+			'title'=>'Edit Public Profile Page',
+			'href'=>'',
 			)
 		);
+	endif;
 	
+}
+
+function ubcpeople_include_template() {
+	
+	if ( !empty( $_REQUEST['person'] ) ):	
 		wp_enqueue_script('jquery');
 		wp_enqueue_script('jquery-ui-draggable');
 		wp_enqueue_script('jquery-ui-resizable');
@@ -100,13 +122,9 @@ function ubcpeople_include_template() {
 		wp_enqueue_style("fileuploader", plugins_url( 'fileuploader.css', __FILE__ ));
 		wp_enqueue_style("colorbox", plugins_url( 'colorbox.css', __FILE__ ));
 		wp_enqueue_style("colorpicker", plugins_url( 'colorpicker/css/colorpicker.css', __FILE__ ));					
-		wp_enqueue_style("ubcpeople", plugins_url( 'style.css', __FILE__ ));						
-						
-						
-						
+		wp_enqueue_style("ubcpeople", plugins_url( 'style.css', __FILE__ ));								
 						
 		wp_enqueue_style("people-jquery-ui", plugins_url( 'jquery-ui.css', __FILE__ ));			
-		
 		wp_enqueue_script("people-json2", "http://ajax.cdnjs.com/ajax/libs/json2/20110223/json2.js");			
 
     	include 'person-template.php';
@@ -114,7 +132,6 @@ function ubcpeople_include_template() {
     endif;
     
 }
- 
 
 
 /*
@@ -134,8 +151,6 @@ function ubcpeople_update_post(){
 	
 	$social = $social_data;
 	
-	print_r($social);
-	
 	$id = $_POST['id']; 
 
 	$post_data = array(
@@ -152,6 +167,13 @@ function ubcpeople_update_post(){
 }
 
 
+function ubcpeople_add_service($user_id, $service_name, $service_username){
+	$social = get_user_meta($user_id, 'social', true);
+	$social[$service_name] = $service_username;
+	
+	update_user_meta($user_id, 'social', $social);
+}
+
 
 /**
  * ubcpeople_get_service_function()
@@ -159,17 +181,17 @@ function ubcpeople_update_post(){
  * Given a string referring to an external service as an input, checks its validity and returns a string which is used to call functions for that service, or false on failure
  */
 function ubcpeople_get_service_function($service_name){
-	$social_options = profile_cct_social_options();
+	//$social_options = profile_cct_social_options();
 	
 	//Make key->value array of slug->name correspond
-	$social_array = array();
-	foreach($social_options as $service):
-		$social_array[] = $service['label'];
-	endforeach;
+	//$social_array = array();
+	//foreach($social_options as $service):
+	//	$social_array[] = $service['label'];
+	//endforeach;
 	
-	if(in_array($service_name, $social_array)):
+	//if(in_array($service_name, $social_array)):
 		return str_replace( array(' ', '-','.'), '_', $service_name);
-	endif;
+	//endif;
 	return false;
 }
 
@@ -180,10 +202,11 @@ function ubcpeople_get_service_function($service_name){
  * Given a string, displays an icon linking to that service in a popup
  */
 function ubcpeople_display_service_icon($service){
-	$func = ubcpeople_get_service_function($service['option']);
+	$func = ubcpeople_get_service_function($service);
+	
 	if($func):
 		$icon = call_user_func('ubcpeople_' . $func . '_get_icon');
-		echo '<a class="open-social-overlay" id="' . $icon['id'] . '" href="#social-inline-content"><img width="32" height="32" src="' . get_stylesheet_directory_uri() . '/social-icons/png/' . $icon['url'] . '" alt="' . $icon['alt'] . '" /></a>';
+		echo '<a class="open-social-overlay" id="' . $icon['id'] . '" href="#social-inline-content"><img width="32" height="32" src="' . plugins_url( '/social-icons/png/' . $icon['url'] , __FILE__ ) . '" alt="' . $icon['alt'] . '" /></a>';
 	endif;
 }
 
@@ -193,10 +216,10 @@ function ubcpeople_display_service_icon($service){
  * Calls the function to display the content for a particular service
  *
  */
-function ubcpeople_display_service($service, $username){
+function ubcpeople_display_service($service, $person_id, $service_username){
 	$func = ubcpeople_get_service_function($service);
 	if($func):
-		call_user_func('ubcpeople_' . $func, $username);
+		call_user_func('ubcpeople_' . $func, $person_id, $service_username);
 	endif;
 }
 
@@ -211,6 +234,7 @@ function ubcpeople_get_user_info($id){
 		'first_name' => get_user_meta( $id, 'first_name', true),
 		'last_name' => get_user_meta( $id, 'last_name', true),
 		'description' => get_user_meta( $id, 'description', true),
+		'id' => $id,
 	);
 
 	if(isset($usermeta['people']) && empty($usermeta['people']))unset($usermeta['people']);
@@ -244,7 +268,15 @@ function ubcpeople_get_user_info($id){
 		)
 	);
 	
-	//echo '<pre>';print_r($usermeta);die();
-	
 	return $usermeta;
+}
+
+
+function ubcpeople_get_available_services(){
+	return array(
+		'facebook'=>'Facebook',
+		'twitter'=>'Twitter',
+		'ubc-blog'=>'UBC Blog',
+		'ubc-wiki' =>'UBC Wiki',
+	);
 }

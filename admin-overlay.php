@@ -1,6 +1,7 @@
 <?php 
-	//print_r($usermeta);
-	//print_r($user);
+	global $current_user;
+	do_action('ubcpeople_admin');
+	if( isset($_REQUEST['person']) && ( $_REQUEST['person'] == $current_user->user_login || current_user_can('edit_users') ) ): //if user has permission to edit this page
 ?>
 <!-- Floating admin interface-->
 	<div id="editor">	
@@ -83,32 +84,43 @@
 			 
 			 <div id="tab-services">
 					<?php
-						function people_show_option_box($service){
-							$social_options = profile_cct_social_options();
-							//print_r($social_options);
-							echo '<select>';
-							foreach($social_options as $option):
-								echo '<option ' . selected($option['label'], $service, false) . '>' . $option['label'] . '</option>';
-							endforeach;
-							echo '</select>';
-						}
-						
-						//people_show_option_box();
-												
+								
 						$services = $usermeta['social'];
-						if( $services != '' ):
-							foreach( $services as $service):
-								people_show_option_box($service['option']);
-								echo '<input type="text" value="'. $service['username'] . '" /><br />';
-							endforeach;
-						endif;
+						$available_services = ubcpeople_get_available_services();
 					?>
-					<a>Add More</a>
-					<br /><a href="https://www.facebook.com/dialog/oauth/?
-    client_id=391752004205525
-    &redirect_uri=<?php the_permalink(); ?>
-    &state=todocsrf
-    &scope=user_status">FB Authenticate</a>
+					
+					<table>
+						<tr>
+							<th style="width:200px;">Site</th>
+							<th style="width:150px;">Controls</th>
+							<th style="width:32px;">Featured</th>
+						</tr>
+						
+						<?php 
+						
+						foreach($available_services as $slug=>$name):
+							if(isset($services[$slug])):
+								?>
+								<tr>
+									<td><?php echo $name; ?></td>
+									<td><a class="open-social-settings" href="#add-service-<?php echo $slug; ?>">Remove</a></td>
+									<td><input type="checkbox" /></td>
+								</tr>	
+								<?php 
+							else: 
+								?>
+								<tr>
+									<td><?php echo $name; ?></td>
+									<td><a class="open-social-settings" href="#add-service-<?php echo $slug; ?>">Add</a></td>
+									<td></td>
+								</tr>	
+								<?php 
+							endif;
+						endforeach; 
+						?>
+						
+					</table>
+
 			 </div>
 			 
 		</div>
@@ -125,3 +137,6 @@
 	</script>
 	
 	<!--End of admin interface-->
+<?
+endif; //User has permission to edit this page
+?>

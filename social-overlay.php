@@ -1,36 +1,26 @@
-<?php 
-	$social_array = array(); //Create array of key->value pairs from the social data
-	/*
-	foreach($post_meta['people']['social'] as $service):
-		$social_array[$service['option']] = $service['username'];
-	endforeach;
-	*/
-?>
-	<div id="social-overlay" style="display:none;">
-		<div id="social-inline-content">
-		
-			<div id="social-tabs">
-				<ul>
-					<?php
-						//Create the tab list
-						/*
-						foreach($post_meta['profile_cct']['social'] as $service):
-							echo '<li><a href="#tab-'.str_replace(array(' ','.'),'-', $service['option']).'">'.$service['option'].'</a></li>
-							';
-						endforeach;
-						*/
-					?>
-				</ul>
-				
+<div id="social-overlay" style="display:none;">
+	<div id="social-inline-content">
+	
+		<div id="social-tabs">
+			<ul>
 				<?php
-				//Create the tab content
-				foreach($social_array as $service=>$username): ?>
-					<div id="tab-<?php echo str_replace(array(' ','.'),'-', $service); ?>">
-						<?php ubcpeople_display_service($service, $username); ?>	
-					</div>
-				<? endforeach;
+					//Create the tab list
+					foreach($usermeta['social'] as $service=>$service_username):
+						echo '<li><a href="#tab-'.str_replace(array(' ','.'),'-', $service).'">'.$service.'</a></li>
+						';
+					endforeach;
 				?>
-			</div>	
+			</ul>
 			
-		</div>
+			<?php
+			//Create the tab content
+			foreach($usermeta['social'] as $service=>$service_username): ?>
+				<div id="tab-<?php echo str_replace(array(' ','.'),'-', $service); ?>">
+					<?php ubcpeople_display_service($service, $usermeta['id'], $service_username); ?>	
+				</div>
+			<? endforeach;
+			?>
+		</div>	
+		
 	</div>
+</div>

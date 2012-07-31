@@ -1,15 +1,18 @@
+//todo: tidy this
 jQuery(document).ready(function() {
 	
 	
-		people_savePost = function(){
+		people_savePost = function(event, callback){
+			callback = callback || function(){};
+			console.log(callback);
 			//profileData.title = jQuery("input#name").val();
 			postData.people.description = jQuery("textarea#bio").val();
 			postData.people.first_name = jQuery("#name-first").val();
 			postData.people.last_name = jQuery("#name-last").val();
-			console.log(postData.people);
-			jQuery.post(ajaxURL, 'people='+JSON.stringify(postData.people)+"&social="+JSON.stringify(postData.social)+"&id="+postData.id);
+			//console.log(postData.people);
+			jQuery.post(ajaxURL, 'people='+JSON.stringify(postData.people)+"&social="+JSON.stringify(postData.social)+"&id="+postData.id, callback);
 			jQuery("#editor").toggle();
-			return false;
+			event.preventDefault();
 		}
 	
 	
@@ -81,6 +84,21 @@ jQuery(document).ready(function() {
 			height:'600px',
 		});
 		
+		
+		jQuery('.open-social-settings').colorbox({
+			inline:true,
+			width:'500px',
+			height:'300px',
+		});
+		
+		
+		jQuery('.submit-add-social').click(function(event){
+			
+			var link = jQuery(this).attr('href');
+			people_savePost( event, function(){ window.location = link; } );
+		});
+		
+		
 		jQuery('#icon-twitter').click(function(){
 			jQuery("#social-tabs").tabs('select', 0);
 		});
@@ -130,7 +148,7 @@ jQuery(document).ready(function() {
 		});
 		
 		
-		jQuery( ".save" ).click(people_savePost);
+		jQuery( ".save" ).click(event, people_savePost);
 		
 		jQuery( ".change-bg-link" ).click(function(){
 			jQuery('html').css("background-image", "url(/wp-content/uploads/people/"+postData.id+"/"+jQuery(this).text()+")");

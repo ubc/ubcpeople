@@ -1,4 +1,5 @@
 <?php
+add_action('ubcpeople_admin', 'ubcpeople_ubc_blog_init');
 
 function ubcpeople_ubc_blog($username){
 	$xml = ubcpeople_ubc_blog_get_data($username);
@@ -42,4 +43,31 @@ function ubcpeople_ubc_blog_get_icon(){
 		'id'=>'icon-ubc-blogs',
 		'alt'=>'UBC Blogs',
 	);
+}
+
+
+/**
+ *	Output the HTML for the add Facebook window
+ */
+function ubcpeople_ubc_blog_add(){
+	
+	?>
+	<div style="display:none;">
+		<div id="add-service-ubc-blog" class="add-service">
+			<h2>Add UBC Blog</h2>
+			
+			<p>UBC Blogs Username<br /> <input type="text" id="ubc-blog-username" name="ubc-blog-username" /></p>
+			
+			<p><a class="submit-add-social" href="https://www.facebook.com/dialog/oauth/?client_id=391752004205525&redirect_uri=<?php echo $current_url ?>&state=todocsrf&scope=user_status">Add</a>
+			<span class="small">Any changes you have made will be saved.</span>
+			</p>
+		</div>
+	</div>
+	<?
+}
+
+
+function ubcpeople_ubc_blog_init(){
+	ubcpeople_ubc_blog_add();
+	
 }

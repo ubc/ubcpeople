@@ -112,3 +112,22 @@ h2 a{
 	padding:6px;
 	padding-top: 0;
 }
+
+th{
+	text-align:left;
+}
+
+.add-service{
+	padding:0 8px;
+}
+
+.submit-add-social{
+	background-color: #000;
+	color: #fff;
+	text-decoration: none;
+	padding:5px 8px;
+}
+
+.small{
+	font-size:75%;
+}
