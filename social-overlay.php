@@ -6,7 +6,7 @@
 				<?php
 					//Create the tab list
 					foreach($usermeta['social'] as $service=>$service_username):
-						echo '<li><a href="#tab-'.str_replace(array(' ','.'),'-', $service).'">'.$service.'</a></li>
+						echo '<li><a href="#tab-'.str_replace(array(' ','.'),'-', $service).'">'.ubcpeople_get_service_name_from_slug($service).'</a></li>
 						';
 					endforeach;
 				?>

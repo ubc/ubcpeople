@@ -1,7 +1,7 @@
 <?php 
 	global $current_user;
 	do_action('ubcpeople_admin');
-	if( isset($_REQUEST['person']) && ( $_REQUEST['person'] == $current_user->user_login || current_user_can('edit_users') ) ): //if user has permission to edit this page
+	if( ubcpeople_current_user_can_edit( $_REQUEST['person'] ) ): //if user has permission to edit this page
 ?>
 <!-- Floating admin interface-->
 	<div id="editor">	

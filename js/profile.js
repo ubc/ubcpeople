@@ -86,7 +86,7 @@ jQuery(document).ready(function() {
 		 */
 		jQuery('.open-social-overlay').colorbox({
 			inline:true,
-			width:'800px',
+			width:'700px',
 			height:'600px',
 		});
 		

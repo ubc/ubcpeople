@@ -29,27 +29,58 @@ include 'include/services/ubc_wiki.php';
 include 'include/services/wordpress.php';
 include 'include/services/facebook.php';
 
-
 //called when profile is updated via the backend edit-profile page. Updates the custom fields for this profile in the DB
 function ubcpeople_update_profile($user_id){
-	if( isset( $_POST['public-profile'] ) && $_POST['public-profile'] == 'true' )
+	$user = get_user_by('id', $user_id);
+	$user_login = $user->user_login;
+	
+	//Enable or disable public-profile based on checkbox
+	if( isset( $_POST['public-profile'] ) && $_POST['public-profile'] == 'true' ):
 		update_user_meta($user_id, 'public-profile', $_POST['public-profile']);
-	else
+	else:
 		delete_user_meta($user_id, 'public-profile');
+	endif;	
+	
+	//need to check if admin here
+	
+	//Are we setting this to be the front page?
+	if( isset( $_POST['profile-front-page'] ) && $_POST['profile-front-page'] == 'true' ):
+		//If so, just set the option
+		update_option( 'people-front-page-profile', $user_login );
+	else:
+		//If the box is not checked
+		$frontpage_option = get_option('people-front-page-profile');
+		if($frontpage_option == $user_login): 
+			//If this page was previously the front page, then reset the front page
+			delete_option( 'people-front-page-profile' );
+		endif;
+		//If this page wasn't the front page then there is no change!
+	endif;
+	
 }
 
 
 function ubcpeople_add_extra_profile_fields($user){
 	?>
 	
-	<h3>Privacy</h3>
+	<h3>Public</h3>
 	<table class="form-table">
 		<tr>
-			<th>Public Profile</th>
+			<th>Enable Public Profile</th>
 			<td>
 				<label for="public-profile">
-					<input type="checkbox" id="public-profile" name="public-profile" value="true" <?php checked( get_user_meta($user->ID, 'public-profile', true), 'true' ); ?> />
-					Enable public profile page
+					<input type="checkbox" id="public-profile" name="public-profile" value="true" <?php checked( get_user_meta( $user->ID, 'public-profile', true), 'true' ); ?> />
+					Activate
+				</label>
+			</td>
+		</tr>
+		
+		<tr>
+			<th>Display as Front Page</th>
+			<td>
+				<label for="profile-front-page">
+					<input type="checkbox" id="profile-front-page" name="profile-front-page" value="true" <?php checked( get_option('people-front-page-profile'), $user->user_login ); ?> />
+					Override site front page
 				</label>
 			</td>
 		</tr>
@@ -96,8 +127,29 @@ function ubcpeople_admin_bar_link(){
 	global $wp_admin_bar;
 	$current_user = wp_get_current_user();
 	
+	if( 1 /* Current user has a public profile*/ ):
+		$wp_admin_bar->remove_menu('logout');
 	
-	if( isset($_REQUEST['person']) && ( $_REQUEST['person'] == $current_user->user_login || current_user_can('edit_users') ) ):
+		$wp_admin_bar->add_node(
+			array(
+			'id'=>'people-view-profile',
+			'title'=>'Public Profile',
+			'href'=>'/?person='.$current_user->user_login,
+			'parent'=>'user-actions',
+			)
+		);
+	
+		$wp_admin_bar->add_node( array(
+			'parent' => 'user-actions',
+			'id'     => 'logout',
+			'title'  => __( 'Log Out' ),
+			'href'   => wp_logout_url(),
+			) 
+		);
+			
+	endif;
+	
+	if( ubcpeople_current_user_can_edit( $_REQUEST['person'] ) ):
 		$wp_admin_bar->add_node(
 			array(
 			'id'=>'people-edit-profile',
@@ -110,8 +162,13 @@ function ubcpeople_admin_bar_link(){
 }
 
 function ubcpeople_include_template() {
+
+	$frontpage_option = get_option('people-front-page-profile');
+	if(!empty($frontpage_option)):
+		$_REQUEST['person'] = $frontpage_option;
+	endif;
 	
-	if ( !empty( $_REQUEST['person'] ) ):	
+	if ( !empty( $_REQUEST['person'] ) || (is_home() && !empty($frontpage_option)) ):	
 		wp_enqueue_script('jquery');
 		wp_enqueue_script('jquery-ui-draggable');
 		wp_enqueue_script('jquery-ui-resizable');
@@ -296,6 +353,11 @@ function ubcpeople_get_available_services(){
 	);
 }
 
+function ubcpeople_get_service_name_from_slug($service_slug){
+	$services = ubcpeople_get_available_services();
+	return $services[$service_slug];
+}
+
 function ubcpeople_submit_add_service(){
 	if(isset($_GET['add-service'])):
 		$user = get_user_by('login', $_GET['person']);
@@ -308,4 +370,11 @@ function ubcpeople_submit_remove_service(){
 		$user = get_user_by('login', $_GET['person']);
 		ubcpeople_remove_service($user->ID, $_GET['remove-service']);
 	endif;
+}
+
+function ubcpeople_current_user_can_edit($person_name){
+	global $current_user;
+	if( isset($person_name) && ( $person_name == $current_user->user_login || current_user_can('edit_users') ) )
+		return true;
+	return false;
 }

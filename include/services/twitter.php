@@ -15,8 +15,11 @@ function ubcpeople_twitter($person_id, $service_username){
 		<ul>
 		
 			<?php 
+			$count = 0;
 			foreach($data as $tweet): 
 				echo '<li>' . apply_filters('the_content',('https://twitter.com/' . $tweet['user']['screen_name'] . '/status/'. $tweet['id_str'])) . '</li>';
+				$count++;
+				if($count==3)break;
 			endforeach; 
 			?> 
 
