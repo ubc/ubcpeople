@@ -13,7 +13,7 @@ jQuery(document).ready(function() {
 			postData.people.last_name = jQuery("#name-last").val();
 			//console.log(postData.people);
 			jQuery.post(ajaxURL, 'people='+JSON.stringify(postData.people)+"&social="+JSON.stringify(postData.social)+"&id="+postData.id, callback);
-			jQuery("#editor").toggle();
+			//jQuery("#editor").toggle();
 			event.preventDefault();
 		}
 	
@@ -110,6 +110,12 @@ jQuery(document).ready(function() {
 			people_savePost( event, function(){ window.location = link; } );
 		});
 		
+		jQuery('a.remove-service').click(function(event){
+			
+			var link = jQuery(this).attr('href');
+			people_savePost( event, function(){ window.location = link; } );
+		});
+		
 		
 		/*
 		 * On submitting simple 'Add Service' form
@@ -179,6 +185,8 @@ jQuery(document).ready(function() {
 		
 		
 		jQuery( ".save" ).click(event, people_savePost);
+		
+		jQuery( ".close" ).click(event, function(){jQuery("#editor").toggle();event.preventDefault();});
 		
 		jQuery( ".change-bg-link" ).click(function(){
 			jQuery('html').css("background-image", "url(/wp-content/uploads/people/"+postData.id+"/"+jQuery(this).text()+")");

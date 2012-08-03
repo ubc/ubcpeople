@@ -162,9 +162,11 @@ function ubcpeople_admin_bar_link(){
 }
 
 function ubcpeople_include_template() {
-
+	
+	//Are we  showing a profile on the frontpage?
 	$frontpage_option = get_option('people-front-page-profile');
-	if(!empty($frontpage_option)):
+	if(!empty($frontpage_option) && !isset($_REQUEST['person']) && is_home() ):
+		
 		$_REQUEST['person'] = $frontpage_option;
 	endif;
 	
@@ -346,6 +348,7 @@ function ubcpeople_get_available_services(){
 	return array(
 		'facebook'=>'Facebook',
 		'twitter'=>'Twitter',
+		'linkedin'=>'LinkedIn',
 		'ubc-blog'=>'UBC Blog',
 		'ubc-wiki' =>'UBC Wiki',
 		'wordpress' =>'WordPress.com',
@@ -358,23 +361,56 @@ function ubcpeople_get_service_name_from_slug($service_slug){
 	return $services[$service_slug];
 }
 
+
 function ubcpeople_submit_add_service(){
 	if(isset($_GET['add-service'])):
-		$user = get_user_by('login', $_GET['person']);
+		$user = get_user_by('login', ubcpeople_get_current_person() );
 		ubcpeople_add_service($user->ID, $_GET['add-service'], $_GET['service-username']);
+		
+		header('Location: ' . ubcpeople_get_person_url() ); 
+		exit;
 	endif;
+	
 }
+
 
 function ubcpeople_submit_remove_service(){
 	if(isset($_GET['remove-service'])):
-		$user = get_user_by('login', $_GET['person']);
+		$user = get_user_by('login', ubcpeople_get_current_person() );
 		ubcpeople_remove_service($user->ID, $_GET['remove-service']);
+		
+		header('Location: ' . ubcpeople_get_person_url() ); 
+		exit;
 	endif;
 }
+
 
 function ubcpeople_current_user_can_edit($person_name){
 	global $current_user;
 	if( isset($person_name) && ( $person_name == $current_user->user_login || current_user_can('edit_users') ) )
 		return true;
 	return false;
+}
+
+
+
+//URL and URL parameter
+
+/**
+ *	Returns URL to a particular persons public profile page, optionally with an array of additional get parameters
+ *	@param string $person_name
+ * 	@param array $get_parameters
+ */
+function ubcpeople_get_person_url($person_name = '', $get_parameters = array()){
+
+	if(empty($person_name))
+		$person_name = ubcpeople_get_current_person();
+		
+	$query_string = http_build_query($get_parameters);
+	return 'http://'.$_SERVER['SERVER_NAME'].'/?person='.$person_name.'&'.$query_string;
+}
+
+function ubcpeople_get_current_person(){
+	if(isset($_REQUEST['person']))
+		return $_REQUEST['person'];
 }

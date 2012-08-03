@@ -9,6 +9,7 @@
 		<div id="editor-tabs">
 			 <ul>
 					<li><a href="#tab-info">Information</a></li>
+					<li><a href="#tab-blog">Blog</a></li>
 					<li><a href="#tab-images">Images</a></li>
 					<li><a href="#tab-styles">Styles</a></li>
 					<li><a href="#tab-services">External Services</a></li>
@@ -16,20 +17,51 @@
 	
 			 
 			 <div id="tab-info">
-					<div class="form-label"><label for="name">Name (first, last)</label></div>
+			 	<div class="admin-tab-contents">
+					<div class="form-label"></div>
+						<table class="form-table">
+							<tr>
+								<td>
+									<label for="name-first">First Name</label>
+								</td><td>
+									<label for="name-last">Last Name</label>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<input type="text" id="name-first" value="<?php echo $usermeta['first_name']; ?>" size="16" />
+								</td><td>
+									<input type="text" id="name-last" value="<?php echo $usermeta['last_name']; ?>" size="16" />
+								</td>
+							</tr>
+						</table>
 					
-					<input type="text" id="name-first" value="<?php echo $usermeta['first_name']; ?>" size="16" />
-					<input type="text" id="name-last" value="<?php echo $usermeta['last_name']; ?>" size="16" />
+					
+					
 					
 					<div class="form-label"><label for="bio">Bio</label></div>
 					<textarea id="bio"><?php echo $usermeta['description']; ?></textarea>
 						
 					<div class="form-label"><label for="tags">Tags</label></div>
 					<input type="text" id="tags" value="<?php echo the_tags(); ?>" />
+				</div>
+			 </div>
+			 
+			 
+			  <div id="tab-blog">
+			 	<div class="admin-tab-contents">
+					<div class="form-label"></div>
+					
+					Next Page URL<br />
+					<input type="text" />
+					Next Page Text<br />
+					<input type="text" />
+				</div>
 			 </div>
 			 
 			 
 			 <div id="tab-images">
+			 	<div class="admin-tab-contents">
 					Background Image<br />
 					
 					<?php 
@@ -45,9 +77,11 @@
 							<p>Please enable JavaScript to use file uploader.</p>
 						</noscript>         
 					</div>
+				</div>
 			 </div>
 			 
 			 <div id="tab-styles">
+			 	<div class="admin-tab-contents">
 					<div class="form-label"><label for="">Heading</label></div>
 						
 						<div class="color-selector" id="heading-color">
@@ -59,9 +93,9 @@
 						</select>
 						
 						<script type="text/javascript">
-						jQuery(document).ready(function(){
+						/*jQuery(document).ready(function(){
 							jQuery('#heading-color').ColorPickerSetColor(postData.people.styles.heading_color);
-						});
+						});*/
 						</script>
 					
 					
@@ -79,10 +113,12 @@
 					
 					<div class="form-label"><label for="">Profile Box Background</label></div>
 					<input type="text" />
+				</div>
 			 </div>
 			 
 			 
 			 <div id="tab-services">
+			 	<div class="admin-tab-contents">
 					<?php
 								
 						$services = $usermeta['social'];
@@ -103,7 +139,7 @@
 								?>
 								<tr>
 									<td><?php echo $name; ?></td>
-									<td><a href="?person=<?php echo $usermeta['login']; ?>&remove-service=<?php echo $slug; ?>">Remove</a></td>
+									<td><a class="remove-service" href="<?php echo ubcpeople_get_person_url($usermeta['login'], array('remove-service'=>$slug) ); ?>">Remove</a></td>
 									<td><input type="checkbox" /></td>
 								</tr>	
 								<?php 
@@ -120,12 +156,15 @@
 						?>
 						
 					</table>
-
+				</div>
 			 </div>
 			 
 		</div>
 		
-		<button class="save" id="save-form">Save</button>
+		<div id="admin-form-controls">
+			<button class="save" id="save-form">Save All Changes</button>
+			<button class="close" id="close-form">Close</button>
+		</div>
 		</form>
 		
 	</div>

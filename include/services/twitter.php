@@ -15,12 +15,20 @@ function ubcpeople_twitter($person_id, $service_username){
 		<ul>
 		
 			<?php 
-			$count = 0;
-			foreach($data as $tweet): 
-				echo '<li>' . apply_filters('the_content',('https://twitter.com/' . $tweet['user']['screen_name'] . '/status/'. $tweet['id_str'])) . '</li>';
-				$count++;
-				if($count==3)break;
-			endforeach; 
+			
+			if(!($output = get_transient('tweets_'.$service_username) ) ):
+				$output="";
+				$count = 0;
+				foreach($data as $tweet): 
+					//if possible then we should cache th finished html of the list
+					$output.= '<li>' . apply_filters('the_content',('https://twitter.com/' . $tweet['user']['screen_name'] . '/status/'. $tweet['id_str'])) . '</li>';
+					$count++;
+					if($count==3)break;
+				endforeach; 
+				set_transient('tweets_'.$service_username, $output, 60*60); 
+			endif; 
+			
+			echo $output;
 			?> 
 
 		</ul>
@@ -32,6 +40,7 @@ function ubcpeople_twitter($person_id, $service_username){
 
 function ubcpeople_twitter_get_feed($username){
 	if(!($data = get_transient('twitter_'.$username) ) ):
+		
 		$data = json_decode(file_get_contents('https://twitter.com/status/user_timeline/'.$username.'.json'),TRUE);
 		set_transient('twitter_'.$username, $data, 60*60);
 	endif;

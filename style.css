@@ -35,7 +35,7 @@ h2 a{
 
 .profile-container{
 	padding:6px;
-	border-radius:0px;
+	border-radius:4px;
 	color:#fff;
 }
 
@@ -51,7 +51,7 @@ h2 a{
 	position:absolute;
 	right:0;
 	width:500px;
-	height:400px;
+	height:420px;
 	display:none;
 	border:1px solid #000;
 	background-color:#fff;
@@ -94,14 +94,6 @@ h2 a{
 	padding:0 !important;
 }
 
-.profile-cct-shell a{
-	color:#fff;
-	text-decoration:none;
-}
-
-.profile-cct-shell.ui-tabs{
-	display:none;
-}
 
 .social-header{
 	
@@ -132,4 +124,24 @@ th{
 
 .small{
 	font-size:75%;
+}
+
+.admin-tab-contents{
+	padding: 6px;
+}
+
+.form-table{
+	padding:0;
+	margin:0;
+	border-spacing:0;
+}
+.form-table td{
+	padding:0;
+	margin:0;
+}
+
+#admin-form-controls{
+	position:absolute;
+	bottom:4px;
+	left:4px;
 }

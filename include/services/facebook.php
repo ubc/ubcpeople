@@ -13,7 +13,7 @@ function ubcpeople_facebook($person_id, $service_username){
 		$data = ubcpeople_fb_get_data($person_id, $service_username);
 	endif;
 	?>
-
+	
 	<div class="social-header">
 		<img src="<?php echo $data['picture']; ?>" style="float:right;" />
 		<h2><a href="http://facebook.com/<?php echo $data['info']['id']; ?>"><?php echo $data['info']['name']; ?> on Facebook</a></h2>
@@ -66,6 +66,10 @@ function ubcpeople_facebook_get_access_code($url, $username){
 		$user_details = json_decode(file_get_contents('https://graph.facebook.com/me?access_token='. $parsed_data['access_token']),true);
 		
 		ubcpeople_add_service($user->ID, 'facebook', $user_details['id']);
+		
+		//temporary solution
+		echo '<meta http-equiv="refresh" content="0;url='.ubcpeople_get_person_url().'" />';
+		exit;
 	endif;
 }
 

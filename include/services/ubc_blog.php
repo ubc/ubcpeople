@@ -27,16 +27,18 @@ function ubcpeople_ubc_blog($person_id, $service_username){
 
 
 function ubcpeople_ubc_blog_get_data($username){
-	//temporary. maybe.
-	$opts = array(
-		'http'=>array(
-			'header'=>'Accept-Encoding: \r\n',
-		),
-	);
-	$context = stream_context_create($opts);
-	
-	$xml = simplexml_load_string(file_get_contents('http://blogs.ubc.ca/'.$username.'/feed/', false, $context));
-	
+	if(!($xml_string = get_transient('blogs_'.$username) ) ):
+		//temporary. maybe.
+		$opts = array(
+			'http'=>array(
+				'header'=>'Accept-Encoding: \r\n',
+			),
+		);
+		$context = stream_context_create($opts);
+		$xml_string = file_get_contents('http://blogs.ubc.ca/'.$username.'/feed/', false, $context);
+		set_transient('blogs_'.$username, $xml_string, 60*60);
+	endif;	
+	$xml = simplexml_load_string( $xml_string );
 	return $xml;
 }
 
@@ -64,7 +66,7 @@ function ubcpeople_ubc_blog_add(){
 				<p>UBC Blogs Username<br /> 	
 					<input type="text" id="service-username" name="service-username" />
 					<input type="hidden" name="add-service" value="ubc-blog" />
-					<input type="hidden" name="person" value="<?php echo $_REQUEST['person']; ?>" />
+					<input type="hidden" name="person" value="<?php echo ubcpeople_get_current_person(); ?>" />
 					
 				</p>
 				

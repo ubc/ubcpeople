@@ -31,7 +31,11 @@ function ubcpeople_ubc_wiki($person_id, $service_username){ ?>
 
 
 function ubcpeople_ubc_wiki_contributions($service_username){
-	$xml = simplexml_load_string(file_get_contents('http://wiki.ubc.ca/api.php?action=feedcontributions&user=' . $service_username . '&feedformat=atom', false));
+	if(!($xml_string = get_transient('ubcwiki_'.$username) ) ):
+		$xml_string = file_get_contents('http://wiki.ubc.ca/api.php?action=feedcontributions&user=' . $service_username . '&feedformat=atom', false);
+		set_transient('ubcwiki_'.$username, $xml_string, 60*60);
+	endif;
+	$xml = simplexml_load_string($xml_string);
 	$results = array();
 	for($i=0;$i<10;$i++):
 		if(!$xml->entry[$i])break;
