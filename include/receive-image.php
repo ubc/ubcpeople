@@ -155,11 +155,19 @@ class qqFileUploader {
 }
 
 
-add_action('wp_ajax_people_upload_photo', 'people_upload_photo');
-function people_upload_photo(){
+add_action('wp_ajax_people_upload_photo', 'ubcpeople_upload_photo');
+function ubcpeople_upload_photo(){
 	if(!is_numeric($_GET['id'])):
 		return;
 	endif;
+	
+	$person = get_user_by('id', $_GET['id']);
+	$person_name = $person->login;
+	
+	if(!ubcpeople_current_user_can_edit($person_name)):
+		return;
+	endif;
+	
 	// list of valid extensions, ex. array("jpeg", "xml", "bmp")
 	$allowedExtensions = array('jpg', 'jpeg');
 	// max file size in bytes

@@ -37,14 +37,16 @@ function ubcpeople_update_profile($user_id){
 	$user = get_user_by('id', $user_id);
 	$user_login = $user->user_login;
 	
+	if(!ubcpeople_current_user_can_edit($user_login)):
+		return;
+	endif;
+	
 	//Enable or disable public-profile based on checkbox
 	if( isset( $_POST['public-profile'] ) && $_POST['public-profile'] == 'true' ):
 		update_user_meta($user_id, 'public-profile', $_POST['public-profile']);
 	else:
 		delete_user_meta($user_id, 'public-profile');
 	endif;	
-	
-	//need to check if admin here
 	
 	//Are we setting this to be the front page?
 	if( isset( $_POST['profile-front-page'] ) && $_POST['profile-front-page'] == 'true' ):
@@ -212,27 +214,45 @@ function ubcpeople_update_post(){
 /**
  * ubcpeople_add_service
  * Add a service to a profile
- * @param int $user_id
+ * @param int $person_name Username associated with the profile that's being edited
  * @param string $service_name Name of the external service being added
  * @param string $service_username Users username on the specified external service
  */
-function ubcpeople_add_service($user_id, $service_name, $service_username){
+function ubcpeople_add_service($person_name, $service_name, $service_username){
+	
+	if(!ubcpeople_current_user_can_edit($person_name)):
+		return;
+	endif;
+	
+	$person = get_user_by('login', $person_name);
+	$user_id = $person->ID;
+	
 	$social = get_user_meta($user_id, 'social', true);
 	$social[$service_name] = $service_username;
-	
 	update_user_meta($user_id, 'social', $social);
+
+	
 }
+
 
 
 /**
  *	ubcpeople_remove_service
  *	Remove a service from a profile
  */
-function ubcpeople_remove_service($user_id, $service_name){
-	//if( ubcpeople_current_user_can_edit() 
+function ubcpeople_remove_service($person_name, $service_name){
+
+	if(!ubcpeople_current_user_can_edit($person_name)):
+		return;
+	endif;
+	
+	$person = get_user_by('login', $person_name);
+	$user_id = $person->ID;
+
 	$social = get_user_meta($user_id, 'social', true);
 	unset($social[$service_name]);
 	update_user_meta($user_id, 'social', $social);
+
 }
 
 
@@ -356,8 +376,8 @@ function ubcpeople_get_service_name_from_slug($service_slug){
  */
 function ubcpeople_submit_add_service(){
 	if(isset($_GET['add-service'])):
-		$user = get_user_by('login', ubcpeople_get_current_person() );
-		ubcpeople_add_service($user->ID, $_GET['add-service'], $_GET['service-username']);
+		
+		ubcpeople_add_service( ubcpeople_get_current_person(), $_GET['add-service'], $_GET['service-username']);
 		
 		header('Location: ' . ubcpeople_get_person_url() ); 
 		exit;
@@ -371,8 +391,8 @@ function ubcpeople_submit_add_service(){
  */
 function ubcpeople_submit_remove_service(){
 	if(isset($_GET['remove-service'])):
-		$user = get_user_by('login', ubcpeople_get_current_person() );
-		ubcpeople_remove_service($user->ID, $_GET['remove-service']);
+		//$user = get_user_by('login', ubcpeople_get_current_person() );
+		ubcpeople_remove_service( ubcpeople_get_current_person(), $_GET['remove-service']);
 		
 		header('Location: ' . ubcpeople_get_person_url() ); 
 		exit;
