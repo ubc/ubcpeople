@@ -29,7 +29,10 @@ include 'include/services/ubc_wiki.php';
 include 'include/services/wordpress.php';
 include 'include/services/facebook.php';
 
-//called when profile is updated via the backend edit-profile page. Updates the custom fields for this profile in the DB
+/**
+ * ubcpeople_update_profile
+ * Called when profile is updated via the backend edit-profile page, adds the ability to make a profile public and set a profile as homepage
+ */
 function ubcpeople_update_profile($user_id){
 	$user = get_user_by('id', $user_id);
 	$user_login = $user->user_login;
@@ -60,6 +63,10 @@ function ubcpeople_update_profile($user_id){
 }
 
 
+/**
+ * ubcpeople_add_extra_profile_fields
+ * Displays extra fields on the backend edit profile page
+ */
 function ubcpeople_add_extra_profile_fields($user){
 	?>
 	
@@ -86,43 +93,11 @@ function ubcpeople_add_extra_profile_fields($user){
 		</tr>
 	</table>
 	
-	<!--
-	<h3>Social Feeds</h3>
-	
-	<table class="form-table">
-	
-		<tr>
-			<th><label for="social-ubc-blog">UBC Blog</label></th>
-			<td>
-				<input type="text" name="social-ubc-blog" id="social-ubc-blog" /> 
-				<span class="description"></span>
-				<br />
-			</td>
-		</tr>
-	
-		<tr>
-			<th><label for="social-facebook">Facebook</label></th>
-			<td>
-				(Authentication Button here!)
-			</td>
-		</tr>
-		
-		<tr>
-			<th><label for="social-twitter">Twitter</label></th>
-			<td>
-				<input type="text" name="social-twitter" id="social-twitter" /> 
-				<span class="description"></span>
-				<br />
-			</td>
-		</tr>
-		
-	</table>
-	-->
 	<?
 }
 
 
-//Adds live edit link to admin bar if user has permission
+//Adds live edit link (toggles the admin overlay) to the admin bar if user has permission
 function ubcpeople_admin_bar_link(){
 	global $wp_admin_bar;
 	$current_user = wp_get_current_user();
@@ -157,19 +132,24 @@ function ubcpeople_admin_bar_link(){
 			'href'=>'',
 			)
 		);
-	endif;
-	
+	endif;	
 }
 
+
+/**
+ * ubcpeople_include_template
+ * Includes the necessary templates and files for a public profile page if we're viewing one.
+ */
 function ubcpeople_include_template() {
 	
 	//Are we  showing a profile on the frontpage?
 	$frontpage_option = get_option('people-front-page-profile');
 	if(!empty($frontpage_option) && !isset($_REQUEST['person']) && is_home() ):
-		
 		$_REQUEST['person'] = $frontpage_option;
 	endif;
 	
+	//All the necessary scripts. Most of them are only necessary for admin controls so could be hidden if the user is not logged in
+	//(or if they do not have edit access to the current profile)
 	if ( !empty( $_REQUEST['person'] ) || (is_home() && !empty($frontpage_option)) ):	
 		wp_enqueue_script('jquery');
 		wp_enqueue_script('jquery-ui-draggable');
@@ -181,15 +161,15 @@ function ubcpeople_include_template() {
 		
 		wp_enqueue_script('ubcpeople', plugins_url( 'js/profile.js', __FILE__ ));
 		
-		wp_enqueue_style("fileuploader", plugins_url( 'fileuploader.css', __FILE__ ));
-		wp_enqueue_style("colorbox", plugins_url( 'colorbox.css', __FILE__ ));
+		wp_enqueue_style("fileuploader", plugins_url( 'css/fileuploader.css', __FILE__ ));
+		wp_enqueue_style("colorbox", plugins_url( 'css/colorbox.css', __FILE__ ));
 		wp_enqueue_style("colorpicker", plugins_url( 'colorpicker/css/colorpicker.css', __FILE__ ));					
-		wp_enqueue_style("ubcpeople", plugins_url( 'style.css', __FILE__ ));								
+		wp_enqueue_style("ubcpeople", plugins_url( 'css/style.css', __FILE__ ));								
 						
-		wp_enqueue_style("people-jquery-ui", plugins_url( 'jquery-ui.css', __FILE__ ));			
+		wp_enqueue_style("people-jquery-ui", plugins_url( 'css/jquery-ui.css', __FILE__ ));			
 		wp_enqueue_script("people-json2", "http://ajax.cdnjs.com/ajax/libs/json2/20110223/json2.js");			
 
-    	include 'person-template.php';
+    	include 'template/person-template.php';
     	exit;
     endif;
     
@@ -200,7 +180,7 @@ function ubcpeople_include_template() {
  *	Update post via ajax from front-end
  */
 function ubcpeople_update_post(){
-
+	// (but why are there even slashes for us to strip?)
 	$people_data = json_decode(stripslashes($_POST['people']), true);
 	$social_data = json_decode(stripslashes($_POST['social']), true);
 	
@@ -229,6 +209,13 @@ function ubcpeople_update_post(){
 }
 
 
+/**
+ * ubcpeople_add_service
+ * Add a service to a profile
+ * @param int $user_id
+ * @param string $service_name Name of the external service being added
+ * @param string $service_username Users username on the specified external service
+ */
 function ubcpeople_add_service($user_id, $service_name, $service_username){
 	$social = get_user_meta($user_id, 'social', true);
 	$social[$service_name] = $service_username;
@@ -237,7 +224,12 @@ function ubcpeople_add_service($user_id, $service_name, $service_username){
 }
 
 
+/**
+ *	ubcpeople_remove_service
+ *	Remove a service from a profile
+ */
 function ubcpeople_remove_service($user_id, $service_name){
+	//if( ubcpeople_current_user_can_edit() 
 	$social = get_user_meta($user_id, 'social', true);
 	unset($social[$service_name]);
 	update_user_meta($user_id, 'social', $social);
@@ -245,19 +237,14 @@ function ubcpeople_remove_service($user_id, $service_name){
 
 
 /**
- * ubcpeople_get_service_function()
+ * ubcpeople_get_service_function
  * @param $service_name
  * Given a string referring to an external service as an input, checks its validity and returns a string which is used to call functions for that service, or false on failure
  */
 function ubcpeople_get_service_function($service_name){
-	//$social_options = profile_cct_social_options();
+	$social_array = ubcpeople_get_available_services();
 	
-	//Make key->value array of slug->name correspond
-	//$social_array = array();
-	//foreach($social_options as $service):
-	//	$social_array[] = $service['label'];
-	//endforeach;
-	
+	//to do: fix this check
 	//if(in_array($service_name, $social_array)):
 		return str_replace( array(' ', '-','.'), '_', $service_name);
 	//endif;
@@ -266,7 +253,7 @@ function ubcpeople_get_service_function($service_name){
 
 
 /**
- * ubcpeople_display_service_icon()
+ * ubcpeople_display_service_icon
  * @param string $service
  * Given a string, displays an icon linking to that service in a popup
  */
@@ -281,8 +268,8 @@ function ubcpeople_display_service_icon($service, $count){
 
 
 /**
- * ubcpeople_display_service()
- * Calls the function to display the content for a particular service
+ * ubcpeople_display_service
+ * Calls the function to display the content for a particular service (in the overlay)
  *
  */
 function ubcpeople_display_service($service, $person_id, $service_username){
@@ -293,10 +280,12 @@ function ubcpeople_display_service($service, $person_id, $service_username){
 }
 
 
-
-
+/**
+ * ubcpeople_get_user_info
+ * Retrieve all the required information for a person
+ */
 function ubcpeople_get_user_info($id){
-	//Retrieve post meta information (this array_map bit is from the codex for get_user_meta) 
+	//Retrieve post meta information  
 	$user = get_userdata($id);
 	$usermeta = array(
 		'people' => get_user_meta( $id, 'people', true),
@@ -307,7 +296,6 @@ function ubcpeople_get_user_info($id){
 		'id' => $id,
 		'login' => $user->user_login,
 	);
-	//print_r($user);
 
 	if(isset($usermeta['people']) && empty($usermeta['people']))unset($usermeta['people']);
 	if(isset($usermeta['social']) && empty($usermeta['social']))unset($usermeta['social']);
@@ -356,12 +344,16 @@ function ubcpeople_get_available_services(){
 	);
 }
 
+
 function ubcpeople_get_service_name_from_slug($service_slug){
 	$services = ubcpeople_get_available_services();
 	return $services[$service_slug];
 }
 
 
+/**
+ *	Called when a user submits the form to add a new service (excluding services requiring authentication )
+ */
 function ubcpeople_submit_add_service(){
 	if(isset($_GET['add-service'])):
 		$user = get_user_by('login', ubcpeople_get_current_person() );
@@ -374,6 +366,9 @@ function ubcpeople_submit_add_service(){
 }
 
 
+/**
+ * Called when a user requests to remove a service
+ */
 function ubcpeople_submit_remove_service(){
 	if(isset($_GET['remove-service'])):
 		$user = get_user_by('login', ubcpeople_get_current_person() );
@@ -385,6 +380,9 @@ function ubcpeople_submit_remove_service(){
 }
 
 
+/**
+ * Determine if the currently logged in user has permission to edit the profile they are currently viewing
+ */
 function ubcpeople_current_user_can_edit($person_name){
 	global $current_user;
 	if( isset($person_name) && ( $person_name == $current_user->user_login || current_user_can('edit_users') ) )
@@ -397,9 +395,10 @@ function ubcpeople_current_user_can_edit($person_name){
 //URL and URL parameter
 
 /**
- *	Returns URL to a particular persons public profile page, optionally with an array of additional get parameters
- *	@param string $person_name
- * 	@param array $get_parameters
+ * ubcpeople_get_person_url
+ * Returns URL to a particular persons public profile page, optionally with an array of additional get parameters
+ * @param string $person_name
+ * @param array $get_parameters
  */
 function ubcpeople_get_person_url($person_name = '', $get_parameters = array()){
 
