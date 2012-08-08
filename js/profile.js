@@ -1,6 +1,6 @@
 //todo: tidy this
 jQuery(document).ready(function() {
-	
+		var admin = true;
 		/*
 		 *	Saves the person data. If provided, call a callback function after
 		 */
@@ -76,7 +76,7 @@ jQuery(document).ready(function() {
 		
 			jQuery( "#editor-tabs" ).tabs();
 			
-			jQuery( "#editor" ).draggable();
+			jQuery( "#editor" ).draggable({containment: "body"});
 			
 			jQuery( "#social-tabs" ).tabs();
 		
@@ -133,17 +133,6 @@ jQuery(document).ready(function() {
 			var number = parseInt(id.substring(5));
 			jQuery("#social-tabs").tabs('select', number)
 		});
-		//to do: we need to actually track which tab corresponds to which service
-		/*jQuery('#icon-twitter').click(function(){
-			jQuery("#social-tabs").tabs('select', 0);
-		});
-		jQuery('#icon-ubc-blogs').click(function(){
-			jQuery("#social-tabs").tabs('select', 1);
-		});
-		jQuery('#icon-facebook').click(function(){
-			jQuery("#social-tabs").tabs('select', 2);
-		});
-		*/
 		
 		
 		jQuery( ".draggable-box" ).draggable({
@@ -152,12 +141,14 @@ jQuery(document).ready(function() {
 				postData.people.box.y = ui.position.top;
 
 			},
-			//containment: "parent",
-		});
+			disabled: "true",
+			containment: "body",
+		}).disableSelection();
 		
 		
 		jQuery( ".resizable-box" ).resizable({
 			handles: 'e, w',
+			disabled: "true",
 			stop:function(event, ui){
 				postData.people.box.w = event.target.clientWidth;
 			},
@@ -180,14 +171,26 @@ jQuery(document).ready(function() {
 		
 		
 		jQuery("#wp-admin-bar-people-edit-profile").click(function(){
-			jQuery("#editor").fadeToggle();
+			toggleEditor();
 			return false;
 		});
 		
+		toggleEditor = function(){
+			admin = !admin;
+			jQuery("#editor").fadeToggle();
+			jQuery(".profile-container").draggable( "option", "disabled", admin );
+			jQuery(".profile-container").resizable( "option", "disabled", admin );
+			
+			if(!admin){
+				jQuery(".profile-container").addClass("profile-container-editable");
+			}else{
+				jQuery(".profile-container").removeClass("profile-container-editable");
+			}
+		}
 		
 		jQuery( ".save" ).click(event, people_savePost);
 		
-		jQuery( ".close" ).click(event, function(){jQuery("#editor").toggle();event.preventDefault();});
+		jQuery( ".close" ).click(event, function(){toggleEditor();event.preventDefault();});
 		
 		jQuery( ".change-bg-link" ).click(function(){
 			jQuery('html').css("background-image", "url(/wp-content/uploads/people/"+postData.id+"/"+jQuery(this).text()+")");

@@ -24,7 +24,7 @@ h2 a{
 	text-decoration:none;
 }
 
-.social-header{
+.social-header{f
 	
 }
 
@@ -37,6 +37,11 @@ h2 a{
 	padding:6px;
 	border-radius:4px;
 	color:#fff;
+	opacity: 1 !important;
+}
+
+.profile-container-editable{
+	border:2px dotted #999;
 }
 
 
