@@ -31,9 +31,9 @@ function ubcpeople_ubc_wiki($person_id, $service_username){ ?>
 
 
 function ubcpeople_ubc_wiki_contributions($service_username){
-	if(!($xml_string = get_transient('ubcwiki_'.$username) ) ):
+	if(!($xml_string = get_transient('ubcwiki_'.$service_username) ) ):
 		$xml_string = file_get_contents('http://wiki.ubc.ca/api.php?action=feedcontributions&user=' . $service_username . '&feedformat=atom', false);
-		set_transient('ubcwiki_'.$username, $xml_string, 60*60);
+		set_transient('ubcwiki_'.$service_username, $xml_string, 60*60);
 	endif;
 	$xml = simplexml_load_string($xml_string);
 	$results = array();
@@ -61,12 +61,12 @@ function ubcpeople_ubc_wiki_add(){
 	
 	?>
 	<div style="display:none;">
-		<div id="add-service-ubc-wiki" class="add-service">
+		<div id="add-service-ubc_wiki" class="add-service">
 			<h2>Add UBC Wiki</h2>
 			<form class="add-service-form" method="get" action="">
 				<p>UBC Wiki Username<br /> 	
 					<input type="text" id="service-username" name="service-username" />
-					<input type="hidden" name="add-service" value="ubc-wiki" />
+					<input type="hidden" name="add-service" value="ubc_wiki" />
 					<input type="hidden" name="person" value="<?php echo $_REQUEST['person']; ?>" />
 					
 				</p>

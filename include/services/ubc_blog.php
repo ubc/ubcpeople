@@ -60,12 +60,12 @@ function ubcpeople_ubc_blog_add(){
 	
 	?>
 	<div style="display:none;">
-		<div id="add-service-ubc-blog" class="add-service">
+		<div id="add-service-ubc_blog" class="add-service">
 			<h2>Add UBC Blog</h2>
 			<form class="add-service-form" method="get" action="">
 				<p>UBC Blogs Username<br /> 	
 					<input type="text" id="service-username" name="service-username" />
-					<input type="hidden" name="add-service" value="ubc-blog" />
+					<input type="hidden" name="add-service" value="ubc_blog" />
 					<input type="hidden" name="person" value="<?php echo ubcpeople_get_current_person(); ?>" />
 					
 				</p>

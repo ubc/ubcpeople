@@ -52,10 +52,11 @@ function ubcpeople_fb_get_data($person_id, $service_username){
 
 function ubcpeople_facebook_get_access_code($url, $username){
 	$user = get_user_by('login', $username);
-
+	
 	if(isset($_GET['code'])):
+		$options = get_option("people_settings");
 		//Exchange the code for the access token
-		$response =  file_get_contents('https://graph.facebook.com/oauth/access_token?client_id=391752004205525&redirect_uri=' . $url . '&client_secret=fcafa1b443fc3194707773c0efb37add&code=' . $_GET['code']);
+		$response =  file_get_contents('https://graph.facebook.com/oauth/access_token?client_id=' . $options['fb_key'] . '&redirect_uri=' . $url . '&client_secret=' . $options['fb_secret'] . '&code=' . $_GET['code']);
 		$parsed_data = array();
 		parse_str($response, $parsed_data);
 		
@@ -63,9 +64,9 @@ function ubcpeople_facebook_get_access_code($url, $username){
 		update_user_meta($user->ID, 'fb_access_token', $parsed_data['access_token']);
 		
 		//Grab the user details so we have their ID/username
-		$user_details = json_decode(file_get_contents('https://graph.facebook.com/me?access_token='. $parsed_data['access_token']),true);
+		$fb_user_details = json_decode(file_get_contents('https://graph.facebook.com/me?access_token='. $parsed_data['access_token']),true);
 		
-		ubcpeople_add_service($user->ID, 'facebook', $user_details['id']);
+		ubcpeople_add_service($username, 'facebook', $fb_user_details['id']);
 		
 		//temporary solution
 		echo '<meta http-equiv="refresh" content="0;url='.ubcpeople_get_person_url().'" />';
@@ -89,12 +90,13 @@ function ubcpeople_facebook_get_icon(){
  */
 function ubcpeople_facebook_add(){
 	$current_url = 'http://'.$_SERVER['SERVER_NAME']. $_SERVER['REQUEST_URI']; //temp
+	$options = get_option("people_settings");
 	?>
 	<div style="display:none;">
 		<div id="add-service-facebook" class="add-service">
 			<h2>Facebook</h2>
 			<p>You will be redirected to Facebook to authenticate. </p>
-			<p><a class="submit-add-social" href="https://www.facebook.com/dialog/oauth/?client_id=391752004205525&redirect_uri=<?php echo $current_url ?>&state=todocsrf&scope=user_status">Authenticate</a>
+			<p><a class="submit-add-social" href="https://www.facebook.com/dialog/oauth/?client_id=<?php echo $options['fb_key']; ?>&redirect_uri=<?php echo $current_url ?>&state=todocsrf&scope=user_status">Authenticate</a>
 			<span class="small">Any changes you have made will be saved.</span>
 			</p>
 		</div>

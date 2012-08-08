@@ -9,7 +9,7 @@
 		<div id="editor-tabs">
 			 <ul>
 					<li><a href="#tab-info">Information</a></li>
-					<li><a href="#tab-blog">Blog</a></li>
+					
 					<li><a href="#tab-images">Images</a></li>
 					<li><a href="#tab-styles">Styles</a></li>
 					<li><a href="#tab-services">External Services</a></li>
@@ -46,19 +46,6 @@
 					<input type="text" id="tags" value="<?php echo the_tags(); ?>" />
 				</div>
 			 </div>
-			 
-			 
-			  <div id="tab-blog">
-			 	<div class="admin-tab-contents">
-					<div class="form-label"></div>
-					
-					Next Page URL<br />
-					<input type="text" />
-					Next Page Text<br />
-					<input type="text" />
-				</div>
-			 </div>
-			 
 			 
 			 <div id="tab-images">
 			 	<div class="admin-tab-contents">
@@ -125,13 +112,15 @@
 						$available_services = ubcpeople_get_available_services();
 					?>
 					
-					<table>
+					<table id="manage-services">
+						<thead>
 						<tr>
 							<th style="width:200px;">Site</th>
 							<th style="width:150px;">Controls</th>
 							<th style="width:32px;">Featured</th>
 						</tr>
-						
+						</thead>
+						<tbody>
 						<?php 
 						
 						foreach($available_services as $slug=>$name):
@@ -154,7 +143,7 @@
 							endif;
 						endforeach; 
 						?>
-						
+						</tbody>
 					</table>
 				</div>
 			 </div>

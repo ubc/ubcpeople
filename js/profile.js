@@ -167,6 +167,7 @@ jQuery(document).ready(function() {
 			}
 		});	
 		
+		jQuery( "#manage-services tbody").sortable().disableSelection();
 	
 	//Events
 		jQuery(document)

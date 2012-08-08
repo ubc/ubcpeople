@@ -23,6 +23,8 @@ add_action('init', 'ubcpeople_submit_add_service');
 add_action('init', 'ubcpeople_submit_remove_service');
 
 include 'include/receive-image.php';
+include 'settings.php';
+
 include 'include/services/twitter.php';
 include 'include/services/ubc_blog.php';
 include 'include/services/ubc_wiki.php';
@@ -126,7 +128,8 @@ function ubcpeople_admin_bar_link(){
 			
 	endif;
 	
-	if( ubcpeople_current_user_can_edit( $_REQUEST['person'] ) ):
+	//todo: check if we are viewing a person page first.
+	if( !is_admin() && ubcpeople_current_user_can_edit( $_REQUEST['person'] ) ):
 		$wp_admin_bar->add_node(
 			array(
 			'id'=>'people-edit-profile',
@@ -156,6 +159,7 @@ function ubcpeople_include_template() {
 		wp_enqueue_script('jquery');
 		wp_enqueue_script('jquery-ui-draggable');
 		wp_enqueue_script('jquery-ui-resizable');
+		wp_enqueue_script('jquery-ui-sortable');
 		
 		wp_enqueue_script('fileuploader', plugins_url( 'js/fileuploader.js', __FILE__ ));
 		wp_enqueue_script('colorbox', plugins_url( 'js/jquery.colorbox-min.js', __FILE__ ));
@@ -257,17 +261,18 @@ function ubcpeople_remove_service($person_name, $service_name){
 
 
 /**
- * ubcpeople_get_service_function
- * @param $service_name
- * Given a string referring to an external service as an input, checks its validity and returns a string which is used to call functions for that service, or false on failure
+ * ubcpeople_is_valid_service
+ * @param $service_slug
+ * Checks if the service slug is valid / corresponds to an implemented service
  */
-function ubcpeople_get_service_function($service_name){
+function ubcpeople_is_valid_service($service_slug){
 	$social_array = ubcpeople_get_available_services();
 	
-	//to do: fix this check
-	//if(in_array($service_name, $social_array)):
-		return str_replace( array(' ', '-','.'), '_', $service_name);
-	//endif;
+	//to do: this should be passed a slug, so all this function should need to do is verify that it exists in the array
+	
+	if(array_key_exists($service_slug, $social_array)):
+		return true;
+	endif;
 	return false;
 }
 
@@ -277,11 +282,9 @@ function ubcpeople_get_service_function($service_name){
  * @param string $service
  * Given a string, displays an icon linking to that service in a popup
  */
-function ubcpeople_display_service_icon($service, $count){
-	$func = ubcpeople_get_service_function($service);
-	
-	if($func):
-		$icon = call_user_func('ubcpeople_' . $func . '_get_icon');
+function ubcpeople_display_service_icon($service_slug, $count){
+	if( ubcpeople_is_valid_service( $service_slug ) ):
+		$icon = call_user_func('ubcpeople_' . $service_slug . '_get_icon');
 		echo '<a class="open-social-overlay" id="icon-' . $count. '" href="#social-inline-content"><img width="32" height="32" src="' . plugins_url( '/social-icons/png/' . $icon['url'] , __FILE__ ) . '" alt="' . $icon['alt'] . '" /></a>';
 	endif;
 }
@@ -292,10 +295,9 @@ function ubcpeople_display_service_icon($service, $count){
  * Calls the function to display the content for a particular service (in the overlay)
  *
  */
-function ubcpeople_display_service($service, $person_id, $service_username){
-	$func = ubcpeople_get_service_function($service);
-	if($func):
-		call_user_func('ubcpeople_' . $func, $person_id, $service_username);
+function ubcpeople_display_service($service_slug, $person_id, $service_username){
+	if( ubcpeople_is_valid_service( $service_slug ) ):
+		call_user_func('ubcpeople_' .$service_slug, $person_id, $service_username);
 	endif;
 }
 
@@ -357,8 +359,8 @@ function ubcpeople_get_available_services(){
 		'facebook'=>'Facebook',
 		'twitter'=>'Twitter',
 		'linkedin'=>'LinkedIn',
-		'ubc-blog'=>'UBC Blog',
-		'ubc-wiki' =>'UBC Wiki',
+		'ubc_blog'=>'UBC Blog',
+		'ubc_wiki' =>'UBC Wiki',
 		'wordpress' =>'WordPress.com',
 		
 	);
