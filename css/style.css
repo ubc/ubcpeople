@@ -101,6 +101,10 @@ h2 a{
 			margin:6px 0;
 			clear:both;
 		}
+		
+		.form-heading{
+			font-weight:bold;
+		}
 	
 	.ui-resizable-e {
 		bottom: 0;

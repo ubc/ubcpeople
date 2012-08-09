@@ -46,7 +46,6 @@ jQuery(document).ready(function() {
 		 * Initialize jQuery UI elements
 		 */
 			jQuery('#heading-color').ColorPicker({
-				//color: '#123456',
 				onChange: function(hsb, hex, rgb){
 					postData.people.styles.heading_color = '#' + hex;
 					jQuery('#heading-color .color-preview').css('background-color', '#' + hex);
@@ -55,13 +54,21 @@ jQuery(document).ready(function() {
 			});
 			
 			jQuery('#text-color').ColorPicker({
-				//color: '#123456',
 				onChange: function(hsb, hex, rgb){
 					postData.people.styles.text_color = '#' + hex;
 					jQuery('#text-color .color-preview').css('background-color', '#' + hex);
 					jQuery('#post-content').css('color', '#' + hex);
 				}
 			});
+			
+			jQuery('#background-color').ColorPicker({
+				onChange: function(hsb, hex, rgb){
+					postData.people.styles.box_bg = 'rgba('+rgb.r+', '+rgb.g+', '+rgb.b+', 0.3)';
+					jQuery('#background-color .color-preview').css('background-color', '#' + hex);
+
+					jQuery('.profile-container').css('background-color', 'rgba('+rgb.r+', '+rgb.g+', '+rgb.b+', 0.3)');
+				}
+			})
 		
 			jQuery('#heading-font').change(function(event){
 				postData.people.styles.heading_font = jQuery('#heading-font').val();
@@ -121,9 +128,9 @@ jQuery(document).ready(function() {
 		 * On submitting simple 'Add Service' form
 		 */
 		jQuery('.add-service-form button').click(function(event){
-
+			
 			var el = jQuery(this).parent().parent();
-			 ( event, function(){el.submit();} );	
+			people_savePost( event, function(){el.submit();} );	
 			
 		});
 		

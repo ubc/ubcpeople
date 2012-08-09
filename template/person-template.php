@@ -26,7 +26,7 @@
 			</script>
 			
 			<div id="main-container">
-				<div class="profile-container resizable-box draggable-box" style="position:absolute; width:<?php echo $usermeta['people']['box']['w']?>px; background-color:rgba(0,0,0, 0.3); left:<?php echo $usermeta['people']['box']['x']?>px; top:<?php echo $usermeta['people']['box']['y']?>px;">
+				<div class="profile-container resizable-box draggable-box" style="position:absolute; width:<?php echo $usermeta['people']['box']['w']?>px; background-color:<?php echo $usermeta['people']['styles']['box_bg']; ?>; left:<?php echo $usermeta['people']['box']['x']?>px; top:<?php echo $usermeta['people']['box']['y']?>px;">
 					<div id="post-title" style="font-family:<?php echo $usermeta['people']['styles']['heading_font']?>;color: <?php echo $usermeta['people']['styles']['heading_color']; ?>"><h1><?php echo $usermeta['first_name'].' '.$usermeta['last_name']; ?></h1></div>
 					<div id="post-content" style="font-family:<?php echo $usermeta['people']['styles']['text_font']?>;color: <?php echo $usermeta['people']['styles']['text_color']; ?>"><p><?php echo nl2br($usermeta['description']); ?></p></div>			
 					<?php 

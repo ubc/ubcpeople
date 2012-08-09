@@ -11,20 +11,20 @@
 					<li><a href="#tab-info">Information</a></li>
 					
 					<li><a href="#tab-images">Images</a></li>
-					<li><a href="#tab-styles">Styles</a></li>
+					<li><a href="#tab-styles">Background</a></li>
 					<li><a href="#tab-services">External Services</a></li>
 			 </ul>
 	
 			 
 			 <div id="tab-info">
 			 	<div class="admin-tab-contents">
-					<div class="form-label"></div>
+					<div class="form-heading">Name</div>
 						<table class="form-table">
 							<tr>
 								<td>
-									<label for="name-first">First Name</label>
+									<label for="name-first">First</label>
 								</td><td>
-									<label for="name-last">Last Name</label>
+									<label for="name-last">Last</label>
 								</td>
 							</tr>
 							<tr>
@@ -39,17 +39,17 @@
 					
 					
 					
-					<div class="form-label"><label for="bio">Bio</label></div>
+					<div class="form-label form-heading"><label for="bio">Bio</label></div>
 					<textarea id="bio"><?php echo $usermeta['description']; ?></textarea>
 						
-					<div class="form-label"><label for="tags">Tags</label></div>
+					<div class="form-label form-heading"><label for="tags">Tags</label></div>
 					<input type="text" id="tags" value="<?php echo the_tags(); ?>" />
 				</div>
 			 </div>
 			 
 			 <div id="tab-images">
 			 	<div class="admin-tab-contents">
-					Background Image<br />
+					<div class="form-heading">Background Image</div>
 					
 					<?php 
 					if($usermeta['people']['images']):
@@ -64,12 +64,15 @@
 							<p>Please enable JavaScript to use file uploader.</p>
 						</noscript>         
 					</div>
+					<div class="form-heading">Background Positioning</div>
+					Scale<br />
+					Center
 				</div>
 			 </div>
 			 
 			 <div id="tab-styles">
 			 	<div class="admin-tab-contents">
-					<div class="form-label"><label for="">Heading</label></div>
+					<div class="form-label form-heading"><label for="">Heading Text</label></div>
 						
 						<div class="color-selector" id="heading-color">
 							<div class="color-preview"></div>
@@ -80,13 +83,24 @@
 						</select>
 						
 						<script type="text/javascript">
-						/*jQuery(document).ready(function(){
+						jQuery(document).ready(function(){
 							jQuery('#heading-color').ColorPickerSetColor(postData.people.styles.heading_color);
-						});*/
+							jQuery('#heading-color .color-preview').css('background-color', postData.people.styles.heading_color);
+						});
+						
+						jQuery(document).ready(function(){
+							jQuery('#text-color').ColorPickerSetColor(postData.people.styles.text_color);
+							jQuery('#text-color .color-preview').css('background-color', postData.people.styles.text_color);
+						});
+						
+						jQuery(document).ready(function(){
+							jQuery('#background-color').ColorPickerSetColor(postData.people.styles.box_bg);
+							jQuery('#background-color .color-preview').css('background-color', postData.people.styles.box_bg);
+						});
 						</script>
 					
-					
-					<div class="form-label"><label for="">Regular Text</label></div>
+						
+					<div class="form-label form-heading"><label for="">Regular Text</label></div>
 					
 						<div class="color-selector" id="text-color">
 							<div class="color-preview"></div>
@@ -98,8 +112,24 @@
 						</select>
 					
 					
-					<div class="form-label"><label for="">Profile Box Background</label></div>
-					<input type="text" />
+					<div class="form-label form-heading"><label for="">Profile Box Background</label></div>
+					<div class="color-selector" id="background-color">
+						<div class="color-preview"></div>
+					</div>
+					
+					<div class="form-label form-heading"><label for="">Profile Box Positioning</label></div>
+					<span>Relative to</span><br />
+					<input type="radio" name="profile-box-position" value="top-left" id="top-left" />
+					<label for="top-left">Top left</label>
+					<input type="radio" name="profile-box-position" value="top-right" id="top-right" />
+					<label for="top-right">Top Right</label>
+					<input type="radio" name="profile-box-position" value="bottom-left" id="bottom-left" />
+					<label for="bottom-left">Bottom Left </label>
+					<input type="radio" name="profile-box-position" value="bottom-right" id="bottom-right" />
+					<label for="bottom-right">Bottom Right</label>
+					<br />
+					<input type="radio" name="profile-box-position" value="scale" id="scale" />
+					<label for="scale">Scale coordinates based on window size</label>
 				</div>
 			 </div>
 			 
@@ -110,12 +140,14 @@
 								
 						$services = $usermeta['social'];
 						$available_services = ubcpeople_get_available_services();
+						
+						$inactive = array_diff( array_keys($available_services), array_keys($services) );
 					?>
-					
+					<p>Click and drag active services up/down to reorder them on profile</p>
 					<table id="manage-services">
 						<thead>
 						<tr>
-							<th style="width:200px;">Site</th>
+							<th style="width:200px;">Active Services</th>
 							<th style="width:150px;">Controls</th>
 							<th style="width:32px;">Featured</th>
 						</tr>
@@ -123,27 +155,35 @@
 						<tbody>
 						<?php 
 						
-						foreach($available_services as $slug=>$name):
-							if(isset($services[$slug])):
-								?>
-								<tr>
-									<td><?php echo $name; ?></td>
-									<td><a class="remove-service" href="<?php echo ubcpeople_get_person_url($usermeta['login'], array('remove-service'=>$slug) ); ?>">Remove</a></td>
-									<td><input type="checkbox" /></td>
-								</tr>	
-								<?php 
-							else: 
-								?>
-								<tr>
-									<td><?php echo $name; ?></td>
-									<td><a class="open-social-settings" href="#add-service-<?php echo $slug; ?>">Add</a></td>
-									<td></td>
-								</tr>	
-								<?php 
-							endif;
+						foreach($services as $service_slug=>$service_username):
+							?>
+							<tr>
+								<td><?php echo $available_services[$service_slug]; ?></td>
+								<td><a class="remove-service" href="<?php echo ubcpeople_get_person_url($usermeta['login'], array('remove-service'=>$slug) ); ?>">Remove</a></td>
+								<td><input type="checkbox" /></td>
+							</tr>	
+							<?php 
 						endforeach; 
 						?>
 						</tbody>
+					</table>
+					
+					<table id="available-services">
+						<tr>
+							<th style="width:200px;">Available Services</th>
+						</tr>
+						<?php
+						foreach($inactive as $service):										
+							?>
+							<tr>
+								<td><?php echo $available_services[$service]; ?></td>
+								<td><a class="open-social-settings" href="#add-service-<?php echo $service; ?>">Add</a></td>
+								<td></td>
+							</tr>	
+							<?php 
+							
+						endforeach;
+						?>
 					</table>
 				</div>
 			 </div>

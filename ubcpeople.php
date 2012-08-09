@@ -337,7 +337,7 @@ function ubcpeople_get_user_info($id){
 					'heading_font'=>'sans-serif',
 					'text_color'=>'#ffffff', 
 					'text_font'=>'sans-serif',
-					'box_bg'=>'#000',
+					'box_bg'=>'#000000',
 					'box_opacity'=>'0.5',
 				),
 				'bg'=>array('url'=>''),
