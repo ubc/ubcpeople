@@ -46,6 +46,12 @@
 		
 			<?php include 'admin-overlay.php'; ?>
 			
+			<?php
+				if(is_front_page()):
+					echo '<div id="next"><a href="blag">[enter site button!!]</a></div>';
+				endif;
+			?>
+			
 			<span class="ajax-spinner" style="display:none;float:left;">Saving...</span>
 			
 		<?php endif; ?>

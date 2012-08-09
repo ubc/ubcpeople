@@ -46,7 +46,7 @@ jQuery(document).ready(function() {
 		 * Initialize jQuery UI elements
 		 */
 			jQuery('#heading-color').ColorPicker({
-				color: '#000000',
+				//color: '#123456',
 				onChange: function(hsb, hex, rgb){
 					postData.people.styles.heading_color = '#' + hex;
 					jQuery('#heading-color .color-preview').css('background-color', '#' + hex);
@@ -55,7 +55,7 @@ jQuery(document).ready(function() {
 			});
 			
 			jQuery('#text-color').ColorPicker({
-				color: '#000000',
+				//color: '#123456',
 				onChange: function(hsb, hex, rgb){
 					postData.people.styles.text_color = '#' + hex;
 					jQuery('#text-color .color-preview').css('background-color', '#' + hex);
@@ -123,7 +123,7 @@ jQuery(document).ready(function() {
 		jQuery('.add-service-form button').click(function(event){
 
 			var el = jQuery(this).parent().parent();
-			people_savePost( event, function(){el.submit();} );	
+			 ( event, function(){el.submit();} );	
 			
 		});
 		

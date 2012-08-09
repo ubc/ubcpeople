@@ -149,13 +149,13 @@ function ubcpeople_include_template() {
 	
 	//Are we  showing a profile on the frontpage?
 	$frontpage_option = get_option('people-front-page-profile');
-	if(!empty($frontpage_option) && !isset($_REQUEST['person']) && is_home() ):
+	if(!empty($frontpage_option) && !isset($_REQUEST['person']) && is_front_page() ):
 		$_REQUEST['person'] = $frontpage_option;
 	endif;
 	
 	//All the necessary scripts. Most of them are only necessary for admin controls so could be hidden if the user is not logged in
 	//(or if they do not have edit access to the current profile)
-	if ( !empty( $_REQUEST['person'] ) || (is_home() && !empty($frontpage_option)) ):	
+	if ( !empty( $_REQUEST['person'] ) || (is_front_page() && !empty($frontpage_option)) ):	
 		wp_enqueue_script('jquery');
 		wp_enqueue_script('jquery-ui-draggable');
 		wp_enqueue_script('jquery-ui-resizable');

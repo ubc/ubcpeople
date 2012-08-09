@@ -9,6 +9,7 @@ Version: 1.0
 License:
 License URI:
 */
+
 body { 
 margin:0; 
 padding:0; 
@@ -24,7 +25,7 @@ h2 a{
 	text-decoration:none;
 }
 
-.social-header{f
+.social-header{
 	
 }
 
@@ -41,7 +42,9 @@ h2 a{
 }
 
 .profile-container-editable{
-	border:2px dotted #999;
+	border:2px dashed #ccc;
+	margin-left:-2px;
+	margin-top:-2px;
 }
 
 
@@ -52,101 +55,118 @@ h2 a{
 	float:right;
 }
 
-#editor{	
-	position:absolute;
-	right:0;
-	width:500px;
-	height:420px;
-	display:none;
-	border:1px solid #000;
-	background-color:#fff;
+#next{
+	padding:4px;
 }
 
-#editor input{
-
-}
-
-#editor textarea{
-	width:400px;
-	height:200px;
-}
-
-
-.color-selector{
-	float:left;
-}
-.color-preview{
-	width:20px;
-	height:20px;
-	border:1px solid #000;
-}
-
-.form-label{
-	margin:6px 0;
-	clear:both;
-}
-
-.ui-resizable-e {
-    bottom: 0;
-    width: 10px
-}
-
-
-.ui-tabs {
-	font-size:13px !important;
-}
-.ui-tabs-panel{
-	padding:0 !important;
-}
-
-
-.social-header{
-	
-	padding:6px;
-}
-.social-body{
-	
-	padding:6px;
-	padding-top: 0;
-}
-
-th{
-	text-align:left;
-}
-
-.add-service{
-	padding:0 8px;
-}
-
-.submit-add-social{
-	background-color: #000;
+#next a{
 	color: #fff;
-	text-decoration: none;
-	padding:4px 6px;
-	border:0;
-	font-size:inherit;
+	text-decoration:none; 
 }
 
-.small{
-	font-size:75%;
-}
+/*
+ *	Admin interface 
+ */
 
-.admin-tab-contents{
-	padding: 6px;
-}
+	#editor{	
+		position:absolute;
+		right:0;
+		width:500px;
+		height:420px;
+		display:none;
+		border:1px solid #000;
+		background-color:#fff;
+	}
+	
+		#editor input{
+		
+		}
+		
+		#editor textarea{
+			width:400px;
+			height:200px;
+		}
+		
+		
+		.color-selector{
+			float:left;
+		}
+		.color-preview{
+			width:20px;
+			height:20px;
+			border:1px solid #000;
+		}
+		
+		.form-label{
+			margin:6px 0;
+			clear:both;
+		}
+	
+	.ui-resizable-e {
+		bottom: 0;
+		width: 10px
+	}
+	
+	
+	.ui-tabs {
+		font-size:13px !important;
+	}
+	.ui-tabs-panel{
+		padding:0 !important;
+	}
+	
+	
+	.add-service{
+		padding:0 8px;
+	}
+	
+	.submit-add-social{
+		background-color: #000;
+		color: #fff;
+		text-decoration: none;
+		padding:4px 6px;
+		border:0;
+		font-size:inherit;
+	}
+	
+	.small{
+		font-size:75%;
+	}
+	
+	.admin-tab-contents{
+		padding: 6px;
+	}
+	
+	.form-table{
+		padding:0;
+		margin:0;
+		border-spacing:0;
+	}
+	.form-table td{
+		padding:0;
+		margin:0;
+	}
+	
+	#admin-form-controls{
+		position:absolute;
+		bottom:4px;
+		left:4px;
+	}
 
-.form-table{
-	padding:0;
-	margin:0;
-	border-spacing:0;
-}
-.form-table td{
-	padding:0;
-	margin:0;
-}
-
-#admin-form-controls{
-	position:absolute;
-	bottom:4px;
-	left:4px;
-}
+/*
+ *	Social Overlay
+ */
+ 
+	.social-header{
+		
+		padding:6px;
+	}
+	.social-body{
+		
+		padding:6px;
+		padding-top: 0;
+	}
+	
+	th{
+		text-align:left;
+	}
