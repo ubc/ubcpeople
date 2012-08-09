@@ -11,7 +11,8 @@ jQuery(document).ready(function() {
 			postData.people.description = jQuery("textarea#bio").val();
 			postData.people.first_name = jQuery("#name-first").val();
 			postData.people.last_name = jQuery("#name-last").val();
-			//console.log(postData.people);
+			postData.people.tagline = jQuery("#input-tagline").val();
+
 			jQuery.post(ajaxURL, 'people='+JSON.stringify(postData.people)+"&social="+JSON.stringify(postData.social)+"&id="+postData.id, callback);
 			//jQuery("#editor").toggle();
 			event.preventDefault();
@@ -53,6 +54,16 @@ jQuery(document).ready(function() {
 				}
 			});
 			
+			
+			jQuery('#tagline-color').ColorPicker({
+				onChange: function(hsb, hex, rgb){
+					postData.people.styles.tagline_color = '#' + hex;
+					jQuery('#tagline-color .color-preview').css('background-color', '#' + hex);
+					jQuery('#tagline').css('color', '#' + hex);
+				}
+			});
+			
+			
 			jQuery('#text-color').ColorPicker({
 				onChange: function(hsb, hex, rgb){
 					postData.people.styles.text_color = '#' + hex;
@@ -73,6 +84,11 @@ jQuery(document).ready(function() {
 			jQuery('#heading-font').change(function(event){
 				postData.people.styles.heading_font = jQuery('#heading-font').val();
 				jQuery('#post-title').css('font-family', jQuery('#heading-font').val());
+			})
+			
+			jQuery('#tagline-font').change(function(event){
+				postData.people.styles.tagline_font = jQuery('#tagline-font').val();
+				jQuery('#tagline').css('font-family', jQuery('#tagline-font').val());
 			})
 			
 			jQuery('#text-font').change(function(event){
@@ -211,6 +227,10 @@ jQuery(document).ready(function() {
 		jQuery( "#name-first, #name-last" ).keydown(function(){
 			setTimeout(function(){jQuery("#post-title h1").html(jQuery( "#name-first" ).val() +" "+ jQuery( "#name-last" ).val() , 10)});
 		});
+		jQuery( "#input-tagline" ).keydown(function(){
+			setTimeout(function(){jQuery("#tagline").html(jQuery('#input-tagline').val() , 10)});
+		});
+		
 		
 	
 });

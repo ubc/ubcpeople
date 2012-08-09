@@ -27,10 +27,19 @@
 			
 			<div id="main-container">
 				<div class="profile-container resizable-box draggable-box" style="position:absolute; width:<?php echo $usermeta['people']['box']['w']?>px; background-color:<?php echo $usermeta['people']['styles']['box_bg']; ?>; left:<?php echo $usermeta['people']['box']['x']?>px; top:<?php echo $usermeta['people']['box']['y']?>px;">
-					<div id="post-title" style="font-family:<?php echo $usermeta['people']['styles']['heading_font']?>;color: <?php echo $usermeta['people']['styles']['heading_color']; ?>"><h1><?php echo $usermeta['first_name'].' '.$usermeta['last_name']; ?></h1></div>
-					<div id="post-content" style="font-family:<?php echo $usermeta['people']['styles']['text_font']?>;color: <?php echo $usermeta['people']['styles']['text_color']; ?>"><p><?php echo nl2br($usermeta['description']); ?></p></div>			
-					<?php 
+					<div id="post-title" style="font-family:<?php echo $usermeta['people']['styles']['heading_font']?>;color: <?php echo $usermeta['people']['styles']['heading_color']; ?>">
+						<h1><?php echo $usermeta['first_name'].' '.$usermeta['last_name']; ?></h1>
+					</div>
+					
+					<div id="tagline" style="font-family:<?php echo $usermeta['people']['styles']['tagline_font']?>;color: <?php echo $usermeta['people']['styles']['tagline_color']; ?>">
+						<?php echo $usermeta['people']['tagline']?>
+					</div>
+					
+					<div id="post-content" style="font-family:<?php echo $usermeta['people']['styles']['text_font']?>;color: <?php echo $usermeta['people']['styles']['text_color']; ?>">
+						<p><?php echo nl2br($usermeta['description']); ?></p>
+					</div>
 						
+					<?php 
 						if( $usermeta['social'] != '' ):
 							$count = 0;
 							foreach( $usermeta['social'] as $service=>$service_username):

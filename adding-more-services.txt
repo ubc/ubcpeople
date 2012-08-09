@@ -1,0 +1,24 @@
+Defining additional services:
+---------------------------
+
+The existing ones are found in ubcpeople/include/services/
+
+To add another you can create a new file in that directory and include it in the main file ubcpeople.php
+
+Required functions
+	
+	ubcpeople_{service_name}_get_icon(); 
+		Get the information for the icon displayed on the profile page
+		
+	ubcpeople_{service_name}(); 
+		Retrieve and echo the contents to be displayed in the overlay window for a particular service
+		
+	ubcpeople_{service_name}_add();
+		Output the form to add a particular service
+		See facebook.php for an example of one that required authentication
+		See ubc_blogs.php or others for examples not requiring authentication. 
+			Each of those forms consists of a username field and two hidden fields to indicate which external service and one to indicate which user we're adding it to
+		
+There's a hook 'ubcpeople_admin' to run code needed for the admin interface, most importantly the form to add a particular service.	You can see how the other services use it 
+
+Lastly add it to ubcpeople_get_available_services() in the main file

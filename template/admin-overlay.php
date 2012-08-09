@@ -10,8 +10,8 @@
 			 <ul>
 					<li><a href="#tab-info">Information</a></li>
 					
-					<li><a href="#tab-images">Images</a></li>
-					<li><a href="#tab-styles">Background</a></li>
+					<li><a href="#tab-images">Background</a></li>
+					<li><a href="#tab-styles">Styles</a></li>
 					<li><a href="#tab-services">External Services</a></li>
 			 </ul>
 	
@@ -37,7 +37,8 @@
 						</table>
 					
 					
-					
+					<div class="form-label form-heading"><label for="tags">Tagline</label></div>
+					<input type="text" id="input-tagline" value="<?php echo $usermeta['people']['tagline'] ?>" />
 					
 					<div class="form-label form-heading"><label for="bio">Bio</label></div>
 					<textarea id="bio"><?php echo $usermeta['description']; ?></textarea>
@@ -50,23 +51,25 @@
 			 <div id="tab-images">
 			 	<div class="admin-tab-contents">
 					<div class="form-heading">Background Image</div>
-					
-					<?php 
-					if($usermeta['people']['images']):
-						foreach($usermeta['people']['images'] as $image):
-							echo '<a href="" class="change-bg-link">'.$image.'</a><br />';
-						endforeach; 
-					endif;
-					?>
-					
 					<div id="file-uploader-demo1">
 						<noscript>			
 							<p>Please enable JavaScript to use file uploader.</p>
 						</noscript>         
 					</div>
+					
+					<?php 
+					if($usermeta['people']['images']):
+						echo '<div class="form-heading">Your uploads</div>';
+						foreach($usermeta['people']['images'] as $image):
+							echo '<a href="" class="change-bg-link">'.$image.'</a><br />';
+						endforeach; 
+						echo '<br />';
+					endif;
+					?>	
+					
 					<div class="form-heading">Background Positioning</div>
-					Scale<br />
-					Center
+					<input type="radio" name="background-pos" value="scale" id="background-scale" /><label for="background-scale">Scale</label><br />
+					<input type="radio" name="background-pos" value="center" id="background-center" /><label for="background-center">Center</label>
 				</div>
 			 </div>
 			 
@@ -94,23 +97,40 @@
 						});
 						
 						jQuery(document).ready(function(){
+							jQuery('#tagline-color').ColorPickerSetColor(postData.people.styles.tagline_color);
+							jQuery('#tagline-color .color-preview').css('background-color', postData.people.styles.tagline_color);
+						});
+						
+						jQuery(document).ready(function(){
 							jQuery('#background-color').ColorPickerSetColor(postData.people.styles.box_bg);
 							jQuery('#background-color .color-preview').css('background-color', postData.people.styles.box_bg);
 						});
 						</script>
 					
+					
+					<div class="form-label form-heading"><label for="">Tagline Text</label></div>
+					
+					<div class="color-selector" id="tagline-color">
+						<div class="color-preview"></div>
+					</div>
+					
+					<select id="tagline-font">
+						<option value="sans-serif">Sans serif</option>
+						<option value="serif" <?php selected('serif', $usermeta['people']['styles']['tagline_font']);?>>Serif</option>
+					</select>
+					
 						
 					<div class="form-label form-heading"><label for="">Regular Text</label></div>
 					
-						<div class="color-selector" id="text-color">
-							<div class="color-preview"></div>
-						</div>
-						
-						<select id="text-font">
-							<option value="sans-serif">Sans serif</option>
-							<option value="serif" <?php selected('serif', $usermeta['people']['styles']['text_font']);?>>Serif</option>
-						</select>
+					<div class="color-selector" id="text-color">
+						<div class="color-preview"></div>
+					</div>
 					
+					<select id="text-font">
+						<option value="sans-serif">Sans serif</option>
+						<option value="serif" <?php selected('serif', $usermeta['people']['styles']['text_font']);?>>Serif</option>
+					</select>
+				
 					
 					<div class="form-label form-heading"><label for="">Profile Box Background</label></div>
 					<div class="color-selector" id="background-color">

@@ -195,6 +195,7 @@ function ubcpeople_update_post(){
 		'styles'=>$people_data['styles'],
 		'bg'=>$people_data['bg'],
 		'images'=>$people_data['images'],
+		'tagline'=>$people_data['tagline'],
 	);
 	
 	$social = $social_data;
@@ -335,6 +336,8 @@ function ubcpeople_get_user_info($id){
 				'styles'=>array(
 					'heading_color'=>'#ffffff', 
 					'heading_font'=>'sans-serif',
+					'tagline_color'=>'#ffffff', 
+					'tagline_font'=>'sans-serif',
 					'text_color'=>'#ffffff', 
 					'text_font'=>'sans-serif',
 					'box_bg'=>'#000000',
@@ -342,6 +345,7 @@ function ubcpeople_get_user_info($id){
 				),
 				'bg'=>array('url'=>''),
 				'images'=>array(),
+				'tagline'=>'',
 				),
 			'social'=>array(
 				
