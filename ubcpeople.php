@@ -161,6 +161,7 @@ function ubcpeople_include_template() {
 		wp_enqueue_script('jquery-ui-sortable');
 		
 		wp_enqueue_script('fileuploader', plugins_url( 'js/fileuploader.js', __FILE__ ));
+		wp_enqueue_script('backstretch', plugins_url( 'js/jquery.backstretch.min.js', __FILE__ ));
 		wp_enqueue_script('colorbox', plugins_url( 'js/jquery.colorbox-min.js', __FILE__ ));
 		wp_enqueue_script('eyecon-colorpicker', plugins_url( 'colorpicker/js/colorpicker.js', __FILE__ ), array('jquery'));
 		

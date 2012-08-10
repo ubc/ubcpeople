@@ -26,7 +26,8 @@ jQuery(document).ready(function() {
 				onComplete: function(id, filename, responseJSON){	
 
 					//console.log(postData);
-					jQuery('html').css("background-image", "url(/wp-content/uploads/people/"+post_id+"/"+responseJSON.filename+")");
+					//jQuery('html').css("background-image", "url(/wp-content/uploads/people/"+post_id+"/"+responseJSON.filename+")");
+					jQuery.backstretch("/wp-content/uploads/people/"+post_id+"/"+responseJSON.filename);
 					postData.people.bg.url = responseJSON.filename;
 					postData.people.images.push(responseJSON.filename);
 					//"/wp-content/uploads/people/"+post_id+"/"+
@@ -227,7 +228,8 @@ jQuery(document).ready(function() {
 		jQuery( ".close" ).click(event, function(){toggleEditor();event.preventDefault();});
 		
 		jQuery( ".change-bg-link" ).click(function(){
-			jQuery('html').css("background-image", "url(/wp-content/uploads/people/"+postData.id+"/"+jQuery(this).text()+")");
+			//jQuery('html').css("background-image", "url(/wp-content/uploads/people/"+postData.id+"/"+jQuery(this).text()+")");
+			jQuery.backstretch("/wp-content/uploads/people/"+postData.id+"/"+jQuery(this).text());
 			postData.people.bg.url = jQuery(this).text();
 			return false;
 		});

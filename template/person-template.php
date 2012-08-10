@@ -22,7 +22,7 @@
 			<script type="text/javascript">
 				postData = <?php echo json_encode($usermeta); ?>;
 				postData.id = <?php echo $user->ID; ?>;
-				jQuery('html').css("background-image", "url(/wp-content/uploads/people/"+postData.id+"/"+postData.people.bg.url+")"); //to do: use css
+				jQuery.backstretch("/wp-content/uploads/people/"+postData.id+"/"+postData.people.bg.url);
 			</script>
 			
 			<div id="main-container">
