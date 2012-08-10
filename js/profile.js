@@ -181,7 +181,18 @@ jQuery(document).ready(function() {
 			}
 		});	
 		
-		jQuery( "#manage-services tbody").sortable().disableSelection();
+		jQuery( "#manage-services tbody").sortable({
+			update: function(event, ui) {
+				var itemOrder = jQuery(this).sortable('toArray');
+				//need to reorder the users social array in js here
+				for(i in itemOrder){
+					itemOrder[i] = itemOrder[i].substr(4)
+				}
+				console.log(itemOrder);
+				console.log(postData.social);
+				postData.social = itemOrder;
+			}
+		}).disableSelection();
 	
 	//Events
 		jQuery(document)
