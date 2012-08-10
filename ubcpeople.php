@@ -82,7 +82,7 @@ function ubcpeople_get_default_data(){
 				
 			),
 			
-		)
+		);
 }
 
 
@@ -214,25 +214,35 @@ function ubcpeople_include_template() {
 	//All the necessary scripts. Most of them are only necessary for admin controls so could be hidden if the user is not logged in
 	//(or if they do not have edit access to the current profile)
 	if ( !empty( $_REQUEST['person'] ) || (is_front_page() && !empty($frontpage_option)) ):	
+	
 		wp_enqueue_script('jquery');
+		
+		//Scripts that only need to be included for profile editing
 		wp_enqueue_script('jquery-ui-draggable');
 		wp_enqueue_script('jquery-ui-resizable');
 		wp_enqueue_script('jquery-ui-sortable');
 		
 		wp_enqueue_script('fileuploader', plugins_url( 'js/fileuploader.js', __FILE__ ));
-		wp_enqueue_script('backstretch', plugins_url( 'js/jquery.backstretch.min.js', __FILE__ ));
-		wp_enqueue_script('colorbox', plugins_url( 'js/jquery.colorbox-min.js', __FILE__ ));
 		wp_enqueue_script('eyecon-colorpicker', plugins_url( 'colorpicker/js/colorpicker.js', __FILE__ ), array('jquery'));
 		
-		wp_enqueue_script('ubcpeople', plugins_url( 'js/profile.js', __FILE__ ));
-		
 		wp_enqueue_style("fileuploader", plugins_url( 'css/fileuploader.css', __FILE__ ));
-		wp_enqueue_style("colorbox", plugins_url( 'css/colorbox.css', __FILE__ ));
 		wp_enqueue_style("colorpicker", plugins_url( 'colorpicker/css/colorpicker.css', __FILE__ ));					
-		wp_enqueue_style("ubcpeople", plugins_url( 'css/style.css', __FILE__ ));								
+		
+		//Scripts needed always on profile pages
+		wp_enqueue_script('ubcpeople', plugins_url( 'js/profile.js', __FILE__ ));
+		wp_enqueue_script('backstretch', plugins_url( 'js/jquery.backstretch.min.js', __FILE__ ));
+		wp_enqueue_script('colorbox', plugins_url( 'js/jquery.colorbox-min.js', __FILE__ ));
+		
+		wp_enqueue_script("people-json2", "http://ajax.cdnjs.com/ajax/libs/json2/20110223/json2.js");		
+		
+		wp_enqueue_style("colorbox", plugins_url( 'css/colorbox.css', __FILE__ ));
+		wp_enqueue_style("ubcpeople", plugins_url( 'css/style.css', __FILE__ ));		
+		
+		wp_enqueue_style("people-jquery-ui", plugins_url( 'css/jquery-ui.css', __FILE__ ));	
+								
 						
-		wp_enqueue_style("people-jquery-ui", plugins_url( 'css/jquery-ui.css', __FILE__ ));			
-		wp_enqueue_script("people-json2", "http://ajax.cdnjs.com/ajax/libs/json2/20110223/json2.js");			
+				
+			
 
     	include 'template/person-template.php';
     	exit;
@@ -396,7 +406,7 @@ function ubcpeople_get_user_info($id){
 	//merge with default values
 	$usermeta = wp_parse_args( 
 		$usermeta,
-		ubcpeople_get_default_data(),
+		ubcpeople_get_default_data()
 	);
 	
 	return $usermeta;
