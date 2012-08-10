@@ -184,13 +184,13 @@ jQuery(document).ready(function() {
 		jQuery( "#manage-services tbody").sortable({
 			update: function(event, ui) {
 				var itemOrder = jQuery(this).sortable('toArray');
+				var newSocialArray = {};
 				//need to reorder the users social array in js here
-				for(i in itemOrder){
-					itemOrder[i] = itemOrder[i].substr(4)
+				for(var i = 0; i < itemOrder.length; i++){
+					itemOrder[i] = itemOrder[i].substr(4);
 				}
-				console.log(itemOrder);
-				console.log(postData.social);
-				postData.social = itemOrder;
+				
+				postData.social.order  = itemOrder;
 			}
 		}).disableSelection();
 	

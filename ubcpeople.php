@@ -2,7 +2,7 @@
 /*
 Plugin Name: People
 Plugin URI: http://ctlt.ubc.ca
-Description: Under development
+Description: Under development.
 Version: 0.1
 Author: ejackisch, ctltdev
 Author URI: http://ctlt.ubc.ca
@@ -199,8 +199,19 @@ function ubcpeople_update_post(){
 	
 	$social = $social_data;
 	
+	
+	//If the order of social icons has been changed, update it..
+	if($social['order']):
+		$order = $social['order'];
+		$new_social = array();
+		foreach($order as $slug):
+			$new_social[$slug] = $social[$slug];
+		endforeach;
+		$social = $new_social;
+	endif;
+	
+	
 	$id = $_POST['id']; 
-
 	$post_data = array(
 		'ID' => $id,
 	);
