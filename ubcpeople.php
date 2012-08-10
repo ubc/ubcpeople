@@ -30,6 +30,62 @@ include 'include/services/ubc_wiki.php';
 include 'include/services/wordpress.php';
 include 'include/services/facebook.php';
 
+
+/**
+ * ubcpeople_get_available_services
+ * The list of services that are available to add to a profile slug=>name
+ */
+function ubcpeople_get_available_services(){
+	return array(
+		'facebook'=>'Facebook',
+		'twitter'=>'Twitter',
+		'linkedin'=>'LinkedIn',
+		'ubc_blog'=>'UBC Blog',
+		'ubc_wiki' =>'UBC Wiki',
+		'wordpress' =>'WordPress.com',
+		
+	);
+}
+
+
+/**
+ * ubcpeople_get_default_data
+ * The default values for a new profile
+ */
+function ubcpeople_get_default_data(){
+	return array(
+			'people'=>array(
+				//The profile box
+				'box'=>array(
+					'x'=>'32', 
+					'y'=>'32', 
+					'w'=>'300',
+				),
+				'styles'=>array(
+					'heading_color'=>'#ffffff', 
+					'heading_font'=>'sans-serif',
+					'tagline_color'=>'#ffffff', 
+					'tagline_font'=>'sans-serif',
+					'text_color'=>'#ffffff', 
+					'text_font'=>'sans-serif',
+					'box_bg'=>'#000000',
+					'box_opacity'=>'0.5',
+				),
+				//Page background settings
+				'bg'=>array('url'=>''),
+				//A list of all the images associated with this user
+				'images'=>array(),
+				'tagline'=>'',
+				),
+			//External services that have been added (service_slug=>username)
+			'social'=>array(
+				
+			),
+			
+		)
+}
+
+
 /**
  * ubcpeople_update_profile
  * Called when profile is updated via the backend edit-profile page, adds the ability to make a profile public and set a profile as homepage
@@ -100,7 +156,10 @@ function ubcpeople_add_extra_profile_fields($user){
 }
 
 
-//Adds live edit link (toggles the admin overlay) to the admin bar if user has permission
+/**
+ * ubcpeople_admin_bar_link
+ * Adds live edit link (toggles the admin overlay) to the admin bar if user has permission
+ */
 function ubcpeople_admin_bar_link(){
 	global $wp_admin_bar;
 	$current_user = wp_get_current_user();
@@ -297,7 +356,7 @@ function ubcpeople_is_valid_service($service_slug){
 function ubcpeople_display_service_icon($service_slug, $count){
 	if( ubcpeople_is_valid_service( $service_slug ) ):
 		$icon = call_user_func('ubcpeople_' . $service_slug . '_get_icon');
-		echo '<a class="open-social-overlay" id="icon-' . $count. '" href="#social-inline-content"><img width="32" height="32" src="' . plugins_url( '/social-icons/png/' . $icon['url'] , __FILE__ ) . '" alt="' . $icon['alt'] . '" /></a>';
+		echo '<a class="open-social-overlay" id="icon-' . $count. '" href="#social-inline-content"><img width="42" height="42" src="' . plugins_url( '/social-icons/png/' . $icon['url'] , __FILE__ ) . '" alt="' . $icon['alt'] . '" /></a>';
 	endif;
 }
 
@@ -337,48 +396,10 @@ function ubcpeople_get_user_info($id){
 	//merge with default values
 	$usermeta = wp_parse_args( 
 		$usermeta,
-		array(
-			'people'=>array(
-				'box'=>array(
-					'x'=>'32', 
-					'y'=>'32', 
-					'w'=>'300',
-				),
-				'styles'=>array(
-					'heading_color'=>'#ffffff', 
-					'heading_font'=>'sans-serif',
-					'tagline_color'=>'#ffffff', 
-					'tagline_font'=>'sans-serif',
-					'text_color'=>'#ffffff', 
-					'text_font'=>'sans-serif',
-					'box_bg'=>'#000000',
-					'box_opacity'=>'0.5',
-				),
-				'bg'=>array('url'=>''),
-				'images'=>array(),
-				'tagline'=>'',
-				),
-			'social'=>array(
-				
-			),
-			
-		)
+		ubcpeople_get_default_data(),
 	);
 	
 	return $usermeta;
-}
-
-
-function ubcpeople_get_available_services(){
-	return array(
-		'facebook'=>'Facebook',
-		'twitter'=>'Twitter',
-		'linkedin'=>'LinkedIn',
-		'ubc_blog'=>'UBC Blog',
-		'ubc_wiki' =>'UBC Wiki',
-		'wordpress' =>'WordPress.com',
-		
-	);
 }
 
 
