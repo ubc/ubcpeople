@@ -2,11 +2,10 @@
 /*
 Plugin Name: People
 Plugin URI: http://ctlt.ubc.ca
-Description:
+Description: Under development
 Version: 0.1
 Author: ejackisch, ctltdev
 Author URI: http://ctlt.ubc.ca
-License: A "Slug" license name e.g. GPL2
 */
 
 add_action( 'wp_ajax_ubcpeople_update_post', 'ubcpeople_update_post' );
