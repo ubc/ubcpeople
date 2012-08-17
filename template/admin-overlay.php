@@ -179,7 +179,7 @@
 							?>
 							<tr id="row-<?php echo $service_slug; ?>">
 								<td><?php echo $available_services[$service_slug]; ?></td>
-								<td><a class="remove-service" href="<?php echo ubcpeople_get_person_url($usermeta['login'], array('remove-service'=>$slug) ); ?>">Remove</a></td>
+								<td><a class="remove-service" href="<?php echo ubcpeople_get_person_url($usermeta['login'], array('remove-service'=>$service_slug) ); ?>">Remove</a></td>
 								<td><input type="checkbox" /></td>
 							</tr>	
 							<?php 

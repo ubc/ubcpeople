@@ -29,7 +29,7 @@ include 'include/services/ubc_blog.php';
 include 'include/services/ubc_wiki.php';
 include 'include/services/wordpress.php';
 include 'include/services/facebook.php';
-
+include 'include/services/linkedin.php';
 
 /**
  * ubcpeople_get_available_services
@@ -218,19 +218,21 @@ function ubcpeople_include_template() {
 		wp_enqueue_script('jquery');
 		
 		//Scripts that only need to be included for profile editing
-		wp_enqueue_script('jquery-ui-draggable');
-		wp_enqueue_script('jquery-ui-resizable');
-		wp_enqueue_script('jquery-ui-sortable');
-		
-		wp_enqueue_script('fileuploader', plugins_url( 'js/fileuploader.js', __FILE__ ));
-		wp_enqueue_script('eyecon-colorpicker', plugins_url( 'colorpicker/js/colorpicker.js', __FILE__ ), array('jquery'));
-		
-		wp_enqueue_style("fileuploader", plugins_url( 'css/fileuploader.css', __FILE__ ));
-		wp_enqueue_style("colorpicker", plugins_url( 'colorpicker/css/colorpicker.css', __FILE__ ));					
+		if( true ):
+			wp_enqueue_script('jquery-ui-draggable');
+			wp_enqueue_script('jquery-ui-resizable');
+			wp_enqueue_script('jquery-ui-sortable');
+			
+			wp_enqueue_script('fileuploader', plugins_url( 'js/fileuploader.js', __FILE__ ));
+			wp_enqueue_script('eyecon-colorpicker', plugins_url( 'colorpicker/js/colorpicker.js', __FILE__ ), array('jquery'));
+			
+			wp_enqueue_style("fileuploader", plugins_url( 'css/fileuploader.css', __FILE__ ));
+			wp_enqueue_style("colorpicker", plugins_url( 'colorpicker/css/colorpicker.css', __FILE__ ));					
+		endif;
 		
 		//Scripts needed always on profile pages
 		wp_enqueue_script('ubcpeople', plugins_url( 'js/profile.js', __FILE__ ));
-		wp_enqueue_script('backstretch', plugins_url( 'js/jquery.backstretch.min.js', __FILE__ ));
+		wp_enqueue_script('backstretch', plugins_url( 'js/jquery.backstretch.min.js', __FILE__ ), array('jquery'));
 		wp_enqueue_script('colorbox', plugins_url( 'js/jquery.colorbox-min.js', __FILE__ ));
 		
 		wp_enqueue_script("people-json2", "http://ajax.cdnjs.com/ajax/libs/json2/20110223/json2.js");		

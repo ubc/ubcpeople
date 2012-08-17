@@ -54,6 +54,8 @@ function ubcpeople_facebook_get_access_code($url, $username){
 	$user = get_user_by('login', $username);
 	
 	if(isset($_GET['code'])):
+		print_r($_GET);
+		die();
 		$options = get_option("people_settings");
 		//Exchange the code for the access token
 		$response =  file_get_contents('https://graph.facebook.com/oauth/access_token?client_id=' . $options['fb_key'] . '&redirect_uri=' . $url . '&client_secret=' . $options['fb_secret'] . '&code=' . $_GET['code']);
