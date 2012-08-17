@@ -53,9 +53,9 @@ function ubcpeople_fb_get_data($person_id, $service_username){
 function ubcpeople_facebook_get_access_code($url, $username){
 	$user = get_user_by('login', $username);
 	
-	if(isset($_GET['code'])):
-		print_r($_GET);
-		die();
+	if(isset($_GET['code']) && $_GET['app'] == 'facebook'):
+		//print_r($_GET);
+		//die();
 		$options = get_option("people_settings");
 		//Exchange the code for the access token
 		$response =  file_get_contents('https://graph.facebook.com/oauth/access_token?client_id=' . $options['fb_key'] . '&redirect_uri=' . $url . '&client_secret=' . $options['fb_secret'] . '&code=' . $_GET['code']);
@@ -98,7 +98,7 @@ function ubcpeople_facebook_add(){
 		<div id="add-service-facebook" class="add-service">
 			<h2>Facebook</h2>
 			<p>You will be redirected to Facebook to authenticate. </p>
-			<p><a class="submit-add-social" href="https://www.facebook.com/dialog/oauth/?client_id=<?php echo $options['fb_key']; ?>&redirect_uri=<?php echo $current_url ?>&state=todocsrf&scope=user_status">Authenticate</a>
+			<p><a class="submit-add-social" href="https://www.facebook.com/dialog/oauth/?client_id=<?php echo $options['fb_key']; ?>&redirect_uri=<?php echo urlencode($current_url . '&app=facebook'); ?>&state=todocsrf&scope=user_status">Authenticate</a>
 			<span class="small">Any changes you have made will be saved.</span>
 			</p>
 		</div>

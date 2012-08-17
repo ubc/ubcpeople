@@ -53,7 +53,7 @@ function ubcpeople_linkedin_get_data($person_id, $service_username){
 function ubcpeople_linkedin_get_access_code($url, $username){
 	$user = get_user_by('login', $username);
 	return;
-	if(isset($_GET['code'])):
+	if(isset($_GET['code']) && $_GET['app'] == 'linkedin'):
 		$options = get_option("people_settings");
 		//Exchange the code for the access token
 		$response =  file_get_contents('https://api.linkedin.com/uas/oauth/accessToken?client_id=' . $options['linkedin_key'] . '&redirect_uri=' . $url . '&client_secret=' . $options['linkedin_secret'] . '&code=' . $_GET['code']);
@@ -97,7 +97,7 @@ function ubcpeople_linkedin_add(){
 		<div id="add-service-linkedin" class="add-service">
 			<h2>LinkedIn</h2>
 			<p>You will be redirected to LinkedIn to authenticate. </p>
-			<p><a class="submit-add-social" href="https://www.facebook.com/dialog/oauth/?client_id=<?php echo $options['fb_key']; ?>&redirect_uri=<?php echo $current_url ?>&state=todocsrf&scope=user_status">Authenticate</a>
+			<p><a class="submit-add-social" href="https://www.linkedin.com/uas/oauth/requestToken/?oauth_consumer_key=<?php echo $options['linkedin_key']; ?>&oauth_callback=<?php echo urlencode($current_url . '&app=linkedin'); ?>">Authenticate</a>			
 			<span class="small">Any changes you have made will be saved.</span>
 			</p>
 		</div>
