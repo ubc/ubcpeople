@@ -37,14 +37,14 @@
 						</table>
 					
 					
-					<div class="form-label form-heading"><label for="tags">Tagline</label></div>
+					<div class="form-label form-heading"><label for="input-tagline">Tagline</label></div>
 					<input type="text" id="input-tagline" value="<?php echo $usermeta['people']['tagline'] ?>" />
 					
 					<div class="form-label form-heading"><label for="bio">Bio</label></div>
 					<textarea id="bio"><?php echo $usermeta['description']; ?></textarea>
-						
+					<!--
 					<div class="form-label form-heading"><label for="tags">Tags</label></div>
-					<input type="text" id="tags" value="<?php echo the_tags(); ?>" />
+					<input type="text" id="tags" value="<?php echo the_tags(); ?>" />-->
 				</div>
 			 </div>
 			 
@@ -81,7 +81,7 @@
 							<div class="color-preview"></div>
 						</div>
 						<select id="heading-font">
-							<option value="sans-serif">Sans serif</option>
+							<option value="geneva">Sans serif</option>
 							<option value="serif" <?php selected('serif', $usermeta['people']['styles']['heading_font']);?>>Serif</option>
 						</select>
 						
@@ -115,7 +115,7 @@
 					</div>
 					
 					<select id="tagline-font">
-						<option value="sans-serif">Sans serif</option>
+						<option value="geneva">Sans serif</option>
 						<option value="serif" <?php selected('serif', $usermeta['people']['styles']['tagline_font']);?>>Serif</option>
 					</select>
 					
@@ -127,7 +127,7 @@
 					</div>
 					
 					<select id="text-font">
-						<option value="sans-serif">Sans serif</option>
+						<option value="geneva">Sans serif</option>
 						<option value="serif" <?php selected('serif', $usermeta['people']['styles']['text_font']);?>>Serif</option>
 					</select>
 				

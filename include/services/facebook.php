@@ -51,19 +51,29 @@ function ubcpeople_fb_get_data($person_id, $service_username){
 
 
 function ubcpeople_facebook_get_access_code($url, $username){
+
+
 	$user = get_user_by('login', $username);
 	
 	if(isset($_GET['code']) && $_GET['app'] == 'facebook'):
-		//print_r($_GET);
-		//die();
+	
 		$options = get_option("people_settings");
-		//Exchange the code for the access token
-		$response =  file_get_contents('https://graph.facebook.com/oauth/access_token?client_id=' . $options['fb_key'] . '&redirect_uri=' . $url . '&client_secret=' . $options['fb_secret'] . '&code=' . $_GET['code']);
-		$parsed_data = array();
-		parse_str($response, $parsed_data);
 		
+		$client 		= new OAuth2\Client($options['fb_key'], $options['fb_secret']);
+		$redirect_uri 	= $url;
+		$token_endpoint = 'https://graph.facebook.com/oauth/access_token';
+	
+	
+		$params = array( 'code' => $_GET['code'], 'redirect_uri' => $redirect_uri );
+		$response = $client->getAccessToken($token_endpoint, 'authorization_code', $params);
+		print_r($response['result']);
+		parse_str($response['result'], $info);
+		$client->setAccessToken($info['access_token']);
+		$fb_user_details = $client->fetch('https://graph.facebook.com/me');
+		print_r( $fb_user_details );
+		die();
 		//store the access token
-		update_user_meta($user->ID, 'fb_access_token', $parsed_data['access_token']);
+		update_user_meta($user->ID, 'fb_access_token', $info['access_token']);
 		
 		//Grab the user details so we have their ID/username
 		$fb_user_details = json_decode(file_get_contents('https://graph.facebook.com/me?access_token='. $parsed_data['access_token']),true);

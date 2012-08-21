@@ -174,3 +174,8 @@ h2 a{
 	th{
 		text-align:left;
 	}
+	
+	.url{
+		color:#666;
+		font-size:75%;
+	}

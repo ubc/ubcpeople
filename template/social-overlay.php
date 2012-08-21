@@ -2,7 +2,9 @@
 	<div id="social-inline-content">
 	
 		<div id="social-tabs">
-			<ul>
+		
+			<!--tab list -->
+			<ul style="display:none;">
 				<?php
 					//Create the tab list
 					foreach($usermeta['social'] as $service=>$service_username):
@@ -12,14 +14,21 @@
 				?>
 			</ul>
 			
-			<?php
-			//Create the tab content
-			foreach($usermeta['social'] as $service=>$service_username): ?>
-				<div id="tab-<?php echo str_replace(array(' ','.'),'-', $service); ?>">
-					<?php ubcpeople_display_service($service, $usermeta['id'], $service_username); ?>	
-				</div>
-			<? endforeach;
-			?>
+			<div id="social-left-column">
+			
+			</div>
+			
+			<div id="social-main-column">
+				<?php
+				//Create the tab content
+				foreach($usermeta['social'] as $service=>$service_username): ?>
+					<div id="tab-<?php echo str_replace(array(' ','.'),'-', $service); ?>">
+						<?php ubcpeople_display_service($service, $usermeta['id'], $service_username); ?>	
+					</div>
+				<? endforeach; 
+				?>
+			</div>
+		
 		</div>	
 		
 	</div>

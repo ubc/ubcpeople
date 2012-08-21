@@ -38,28 +38,46 @@
 					<div id="post-content" style="font-family:<?php echo $usermeta['people']['styles']['text_font']?>;color: <?php echo $usermeta['people']['styles']['text_color']; ?>">
 						<p><?php echo nl2br($usermeta['description']); ?></p>
 					</div>
-						
+					
 					<?php 
+					
 						if( $usermeta['social'] != '' ):
 							$count = 0;
 							foreach( $usermeta['social'] as $service=>$service_username):
+								if(in_array($service,array('ubc_blog', 'ubc_wiki')))continue;	//TEMP
 								ubcpeople_display_service_icon($service, $count);
 								$count++;
 							endforeach;
 						endif;
 					?>
+					<div>At UBC:</div>
+					
+					<?php 
+						if( $usermeta['social'] != '' ):
+							$count = 0;
+							foreach( $usermeta['social'] as $service=>$service_username):
+								if(!in_array($service,array('ubc_blog', 'ubc_wiki')))continue;	//TEMP
+								ubcpeople_display_service_icon($service, $count);
+								$count++;
+							endforeach;
+						endif;
+					?>
+					
+					
+					
+					<?php
+					
+						/* if(is_front_page() && empty($_GET['person'])):
+							echo '<div id="next"><a href="blag">[Todo: Enter Site Button]</a></div>';
+						endif;*/
+					?>
+					
 				</div>
 			</div>
 			
 			<?php include 'social-overlay.php'; ?>
 		
 			<?php include 'admin-overlay.php'; ?>
-			
-			<?php
-				if(is_front_page()):
-					echo '<div id="next"><a href="blag">[enter site button!!]</a></div>';
-				endif;
-			?>
 			
 			<span class="ajax-spinner" style="display:none;float:left;">Saving...</span>
 			

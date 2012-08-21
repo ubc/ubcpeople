@@ -24,6 +24,10 @@ add_action('init', 'ubcpeople_submit_remove_service');
 include 'include/receive-image.php';
 include 'settings.php';
 
+require 'include/adoy-php-oauth2/Client.php';
+require 'include/adoy-php-oauth2/GrantType/IGrantType.php';
+require 'include/adoy-php-oauth2/GrantType/AuthorizationCode.php';
+
 include 'include/services/twitter.php';
 include 'include/services/ubc_blog.php';
 include 'include/services/ubc_wiki.php';
@@ -68,7 +72,7 @@ function ubcpeople_get_default_data(){
 					'tagline_font'=>'sans-serif',
 					'text_color'=>'#ffffff', 
 					'text_font'=>'sans-serif',
-					'box_bg'=>'#000000',
+					'box_bg'=>'rgba(0, 0, 0, 0.3)',
 					'box_opacity'=>'0.5',
 				),
 				//Page background settings
@@ -141,7 +145,7 @@ function ubcpeople_add_extra_profile_fields($user){
 			</td>
 		</tr>
 		
-		<tr>
+		<? /* <tr>
 			<th>Display as Front Page</th>
 			<td>
 				<label for="profile-front-page">
@@ -149,7 +153,7 @@ function ubcpeople_add_extra_profile_fields($user){
 					Override site front page
 				</label>
 			</td>
-		</tr>
+		</tr> */ ?>
 	</table>
 	
 	<?
@@ -164,7 +168,7 @@ function ubcpeople_admin_bar_link(){
 	global $wp_admin_bar;
 	$current_user = wp_get_current_user();
 	
-	if( 1 /* Current user has a public profile*/ ):
+	if( 1 /* todo: check if Current user has a public profile*/ ):
 		$wp_admin_bar->remove_menu('logout');
 	
 		$wp_admin_bar->add_node(
