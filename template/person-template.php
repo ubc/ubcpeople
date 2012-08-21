@@ -50,7 +50,7 @@
 							endforeach;
 						endif;
 					?>
-					<div>At UBC:</div>
+					<div>@UBC:</div>
 					
 					<?php 
 						if( $usermeta['social'] != '' ):
