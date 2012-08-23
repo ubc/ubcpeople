@@ -225,6 +225,6 @@
 	</script>
 	
 	<!--End of admin interface-->
-<?
+<?php
 endif; //User has permission to edit this page
 ?>
