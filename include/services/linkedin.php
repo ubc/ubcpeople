@@ -102,7 +102,7 @@ function ubcpeople_linkedin_add(){
 			</p>
 		</div>
 	</div>
-	<?
+	<?php
 }
 
 function ubcpeople_linkedin_init(){

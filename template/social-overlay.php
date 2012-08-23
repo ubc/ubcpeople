@@ -47,7 +47,7 @@
 					<div id="tab-<?php echo str_replace(array(' ','.'),'-', $service); ?>">
 						<?php ubcpeople_display_service($service, $usermeta['id'], $service_username); ?>	
 					</div>
-				<? endforeach; 
+				<?php endforeach; 
 				?>
 			</div>
 		

@@ -72,7 +72,7 @@ function ubcpeople_wordpress_add(){
 			
 		</div>
 	</div>
-	<?
+	<?php
 }
 
 

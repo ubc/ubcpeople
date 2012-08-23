@@ -88,11 +88,12 @@ function ubcpeople_facebook_get_access_code($url, $username){
 
 
 
-function ubcpeople_facebook_get_icon(){
+function ubcpeople_facebook_get_parameters(){
 	return array(
-		'url'=>'facebook.png',
-		'id'=>'icon-facebook',
-		'alt'=>'Facebook',
+		'icon-url'=>'facebook.png',
+		'icon-id'=>'icon-facebook',
+		'icon-alt'=>'Facebook',
+		'category'=>'external',
 	);
 }
 
@@ -113,7 +114,7 @@ function ubcpeople_facebook_add(){
 			</p>
 		</div>
 	</div>
-	<?
+	<?php
 }
 
 function ubcpeople_facebook_init(){

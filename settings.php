@@ -29,7 +29,7 @@ function ubcpeople_register_settings(){
 function ubcpeople_keys_section_string(){
 	?>
 	You must create an app on these social networks and fill in the boxes below with the appropriate keys.
-	<?
+	<?php
 }
 
 
@@ -37,7 +37,7 @@ function ubcpeople_fb_key_field(){
 	$options = get_option('people_settings');
 	?>
 	<input type="text" id="fb_key" name="people_settings[fb_key]"value="<?php echo $options['fb_key']; ?>" />
-	<?
+	<?php
 }
 
 
@@ -45,7 +45,7 @@ function ubcpeople_fb_secret_field(){
 	$options = get_option('people_settings');
 	?>
 	<input type="text" id="fb_secret" name="people_settings[fb_secret]" value="<?php echo $options['fb_secret']; ?>" />
-	<?
+	<?php
 }
 
 
@@ -53,7 +53,7 @@ function ubcpeople_linkedin_key_field(){
 	$options = get_option('people_settings');
 	?>
 	<input type="text" id="linkedin_key" name="people_settings[linkedin_key]"value="<?php echo $options['linkedin_key']; ?>" />
-	<?
+	<?php
 }
 
 
@@ -61,7 +61,7 @@ function ubcpeople_linkedin_secret_field(){
 	$options = get_option('people_settings');
 	?>
 	<input type="text" id="linkedin_secret" name="people_settings[linkedin_secret]" value="<?php echo $options['linkedin_secret']; ?>" />
-	<?
+	<?php
 }
 
 
@@ -80,5 +80,5 @@ function ubcpeople_settings_page(){
 			<?php submit_button(); ?>
 		</form>
 	</div>
-	<?
+	<?php
 }

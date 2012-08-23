@@ -21,7 +21,7 @@ function ubcpeople_ubc_blog($person_id, $service_username){
 			<p><?php echo $item->description ?></p>
 		<?php endforeach; ?>
 	</div>
-	<?
+	<?php
 }
 
 
@@ -77,7 +77,7 @@ function ubcpeople_ubc_blog_add(){
 			
 		</div>
 	</div>
-	<?
+	<?php
 }
 
 

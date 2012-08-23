@@ -145,7 +145,7 @@ function ubcpeople_add_extra_profile_fields($user){
 			</td>
 		</tr>
 		
-		<? /* <tr>
+		<?php /* <tr>
 			<th>Display as Front Page</th>
 			<td>
 				<label for="profile-front-page">
@@ -156,7 +156,7 @@ function ubcpeople_add_extra_profile_fields($user){
 		</tr> */ ?>
 	</table>
 	
-	<?
+	<?php
 }
 
 
@@ -371,8 +371,8 @@ function ubcpeople_is_valid_service($service_slug){
  */
 function ubcpeople_display_service_icon($service_slug, $count){
 	if( ubcpeople_is_valid_service( $service_slug ) ):
-		$icon = call_user_func('ubcpeople_' . $service_slug . '_get_icon');
-		echo '<a class="open-social-overlay" id="icon-' . $count. '" href="#social-inline-content"><img width="42" height="42" src="' . plugins_url( '/social-icons/png/' . $icon['url'] , __FILE__ ) . '" alt="' . $icon['alt'] . '" /></a>';
+		$icon = call_user_func('ubcpeople_' . $service_slug . '_get_parameters');
+		echo '<a class="open-social-overlay" id="icon-' . $count. '" href="#social-inline-content"><img width="42" height="42" src="' . plugins_url( '/social-icons/png/' . $icon['icon-url'] , __FILE__ ) . '" alt="' . $icon['icon-alt'] . '" /></a>';
 	endif;
 }
 

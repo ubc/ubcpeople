@@ -78,7 +78,7 @@ function ubcpeople_ubc_wiki_add(){
 			
 		</div>
 	</div>
-	<?
+	<?php
 }
 
 

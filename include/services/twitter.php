@@ -33,7 +33,7 @@ function ubcpeople_twitter($person_id, $service_username){
 
 		</ul>
 	</div>
-	<?
+	<?php
 }
 
 
@@ -83,7 +83,7 @@ function ubcpeople_twitter_add(){
 			
 		</div>
 	</div>
-	<?
+	<?php
 }
 
 
