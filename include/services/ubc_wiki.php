@@ -50,7 +50,7 @@ function ubcpeople_ubc_wiki_get_parameters(){
 		'icon-url'=>'wiki.png',
 		'icon-id'=>'icon-ubc-wiki',
 		'icon-alt'=>'UBC Wiki',
-		'icon-category'=>'internal',
+		'category'=>'internal',
 	);
 }
 

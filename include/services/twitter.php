@@ -54,6 +54,7 @@ function ubcpeople_twitter_get_icon(){
 		'url'=>'twitter.png',
 		'id'=>'icon-twitter',
 		'alt'=>'Twitter',
+		'category'=>'external',
 	);
 }
 

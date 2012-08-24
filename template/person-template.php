@@ -43,24 +43,33 @@
 					</div>
 					
 					<?php 
+						
+						//$usermeta['social']  needs to be re-ordered with internal first and external second
+						
 						$internal_services = array();
 						$external_services = array();
+						foreach($usermeta['social'] as $service=>$service_username):
+							$service_details = ubcpeople_get_service_parameters( $service );
+							if( $service_details['category'] == 'internal' )
+								$internal_services[$service] = $service_username;
+							else
+								$external_services[$service] = $service_username;
+						endforeach;
+						
+						echo '<div>@UBC:</div>';
+						
 						if( $usermeta['social'] != '' ):
 							$count = 0;
-							foreach( $usermeta['social'] as $service=>$service_username):
-								if(in_array($service,array('ubc_blog', 'ubc_wiki')))continue;	//TEMP
+							foreach( $internal_services as $service=>$service_username):
+								$service_details = ubcpeople_get_service_parameters($service);
 								ubcpeople_display_service_icon($service, $count);
 								$count++;
-							endforeach;
-						endif;
-					?>
-					<div>@UBC:</div>
-					
-					<?php 
-						if( $usermeta['social'] != '' ):
-							$count = 0;
-							foreach( $usermeta['social'] as $service=>$service_username):
-								if(!in_array($service,array('ubc_blog', 'ubc_wiki')))continue;	//TEMP
+							endforeach;			
+						
+						echo '<div>Elsewhere</div>';
+							
+							foreach( $external_services as $service=>$service_username):
+								$service_details = ubcpeople_get_service_parameters($service);
 								ubcpeople_display_service_icon($service, $count);
 								$count++;
 							endforeach;

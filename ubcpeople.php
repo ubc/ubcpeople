@@ -376,6 +376,12 @@ function ubcpeople_display_service_icon($service_slug, $count){
 	endif;
 }
 
+function ubcpeople_get_service_parameters($service_slug){
+	if( ubcpeople_is_valid_service( $service_slug ) ):
+		return call_user_func('ubcpeople_' . $service_slug . '_get_parameters');
+	endif;
+}
+
 
 /**
  * ubcpeople_display_service
