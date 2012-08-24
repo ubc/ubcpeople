@@ -1,6 +1,6 @@
 <?php 
 	global $current_user;
-	do_action('ubcpeople_admin');
+	do_action('ubcpeople_add_service_form');
 	if( ubcpeople_current_user_can_edit( $_REQUEST['person'] ) ): //if user has permission to edit this page
 ?>
 <!-- Floating admin interface-->

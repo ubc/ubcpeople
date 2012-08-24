@@ -1,6 +1,6 @@
 <?php
 add_action('ubcpeople_admin', 'ubcpeople_twitter_init');
-
+add_action('ubcpeople_add_service_form', 'ubcpeople_twitter_add');
 function ubcpeople_twitter($person_id, $service_username){
 
 	$data = ubcpeople_twitter_get_feed($service_username);
@@ -88,6 +88,5 @@ function ubcpeople_twitter_add(){
 
 
 function ubcpeople_twitter_init(){
-	ubcpeople_twitter_add();
 	
 }

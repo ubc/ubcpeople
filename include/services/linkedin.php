@@ -1,6 +1,6 @@
 <?php
 add_action('ubcpeople_admin', 'ubcpeople_linkedin_init');
-
+add_action('ubcpeople_add_service_form', 'ubcpeople_linkedin_add');
 /**
  *	Display the content of the Linkedin social overlay. To be called from main plugin file
  *	@param int $person_id
@@ -77,11 +77,12 @@ function ubcpeople_linkedin_get_access_code($url, $username){
 
 
 
-function ubcpeople_linkedin_get_icon(){
+function ubcpeople_linkedin_get_parameters(){
 	return array(
-		'url'=>'linkedin.png',
-		'id'=>'icon-linkedin',
-		'alt'=>'LinkedIn',
+		'icon-url'=>'linkedin.png',
+		'icon-id'=>'icon-linkedin',
+		'icon-alt'=>'LinkedIn',
+		'category'=>'external',
 	);
 }
 
@@ -107,8 +108,6 @@ function ubcpeople_linkedin_add(){
 
 function ubcpeople_linkedin_init(){
 	$current_url = 'http://'.$_SERVER['SERVER_NAME']. $_SERVER['REQUEST_URI']; //temp
-	
-	ubcpeople_linkedin_add();
 	ubcpeople_linkedin_get_access_code($current_url, $_REQUEST['person']);
 	
 }

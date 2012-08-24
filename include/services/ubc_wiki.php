@@ -1,5 +1,5 @@
 <?php
-add_action('ubcpeople_admin', 'ubcpeople_ubc_wiki_init');
+add_action('ubcpeople_add_service_form', 'ubcpeople_ubc_wiki_add');
 /**
  *	
  */
@@ -45,11 +45,12 @@ function ubcpeople_ubc_wiki_contributions($service_username){
 }
 
 
-function ubcpeople_ubc_wiki_get_icon(){
+function ubcpeople_ubc_wiki_get_parameters(){
 	return array(
-		'url'=>'wiki.png',
-		'id'=>'icon-ubc-wiki',
-		'alt'=>'UBC Wiki',
+		'icon-url'=>'wiki.png',
+		'icon-id'=>'icon-ubc-wiki',
+		'icon-alt'=>'UBC Wiki',
+		'icon-category'=>'internal',
 	);
 }
 
@@ -79,10 +80,4 @@ function ubcpeople_ubc_wiki_add(){
 		</div>
 	</div>
 	<?php
-}
-
-
-function ubcpeople_ubc_wiki_init(){
-	ubcpeople_ubc_wiki_add();
-	
 }

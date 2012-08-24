@@ -1,5 +1,5 @@
 <?php
-add_action('ubcpeople_admin', 'ubcpeople_wordpress_init');
+add_action('ubcpeople_add_service_form', 'ubcpeople_wordpress_add');
 
 function ubcpeople_wordpress($person_id, $service_username){
 	$xml = ubcpeople_wordpress_get_data($service_username);
@@ -39,11 +39,12 @@ function ubcpeople_wordpress_get_data($username){
 
 
 
-function ubcpeople_wordpress_get_icon(){
+function ubcpeople_wordpress_get_parameters(){
 	return array(
-		'url'=>'wordpress.png',
-		'id'=>'icon-wordpress',
-		'alt'=>'WordPress',
+		'icon-url'=>'wordpress.png',
+		'icon-id'=>'icon-wordpress',
+		'icon-alt'=>'WordPress',
+		'category'=>'external',
 	);
 }
 
@@ -73,10 +74,4 @@ function ubcpeople_wordpress_add(){
 		</div>
 	</div>
 	<?php
-}
-
-
-function ubcpeople_wordpress_init(){
-	ubcpeople_wordpress_add();
-	
 }

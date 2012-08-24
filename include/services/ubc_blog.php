@@ -1,5 +1,5 @@
 <?php
-add_action('ubcpeople_admin', 'ubcpeople_ubc_blog_init');
+add_action('ubcpeople_add_service_form', 'ubcpeople_ubc_blog_add');
 
 /**
  *	Display the content of the UBC blog social overlay. To be called from main plugin file
@@ -44,11 +44,12 @@ function ubcpeople_ubc_blog_get_data($username){
 
 
 
-function ubcpeople_ubc_blog_get_icon(){
+function ubcpeople_ubc_blog_get_parameters(){
 	return array(
-		'url'=>'wordpress.png',
-		'id'=>'icon-ubc-blogs',
-		'alt'=>'UBC Blogs',
+		'icon-url'=>'wordpress.png',
+		'icon-id'=>'icon-ubc-blogs',
+		'icon-alt'=>'UBC Blogs',
+		'category'=>'internal',
 	);
 }
 
@@ -78,10 +79,4 @@ function ubcpeople_ubc_blog_add(){
 		</div>
 	</div>
 	<?php
-}
-
-
-function ubcpeople_ubc_blog_init(){
-	ubcpeople_ubc_blog_add();
-	
 }

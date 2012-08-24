@@ -1,3 +1,6 @@
+<?php
+	do_action('ubcpeople_admin');
+?>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -40,7 +43,8 @@
 					</div>
 					
 					<?php 
-					
+						$internal_services = array();
+						$external_services = array();
 						if( $usermeta['social'] != '' ):
 							$count = 0;
 							foreach( $usermeta['social'] as $service=>$service_username):
