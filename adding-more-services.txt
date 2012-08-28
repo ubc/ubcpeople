@@ -1,13 +1,13 @@
 Defining additional services:
 ---------------------------
 
-The existing ones are found in ubcpeople/include/services/
+The existing services are found in ubcpeople/include/services/
 
 To add another you can create a new file in that directory and include it in the main file ubcpeople.php
 
 Required functions
 	
-	ubcpeople_{service_name}_get_icon(); 
+	ubcpeople_{service_name}_get_parameters(); 
 		Get the information for the icon displayed on the profile page
 		
 	ubcpeople_{service_name}(); 
@@ -22,3 +22,5 @@ Required functions
 There's a hook 'ubcpeople_admin' to run code needed for the admin interface, most importantly the form to add a particular service.	You can see how the other services use it 
 
 Lastly add it to ubcpeople_get_available_services() in the main file
+
+Check out the services/ubc_blogs.php for a simple one that doesn't have fancy authentication or anything

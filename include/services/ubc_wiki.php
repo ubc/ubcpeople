@@ -1,7 +1,7 @@
 <?php
 add_action('ubcpeople_add_service_form', 'ubcpeople_ubc_wiki_add');
 /**
- *	
+ *	Content to be displayed in wiki tab on social overlay
  */
 function ubcpeople_ubc_wiki($person_id, $service_username){ ?>
 
@@ -30,6 +30,9 @@ function ubcpeople_ubc_wiki($person_id, $service_username){ ?>
 <?php }
 
 
+/**
+ *	Get the XML feed for the users contribs from wiki
+ */
 function ubcpeople_ubc_wiki_contributions($service_username){
 	if(!($xml_string = get_transient('ubcwiki_'.$service_username) ) ):
 		$xml_string = file_get_contents('http://wiki.ubc.ca/api.php?action=feedcontributions&user=' . $service_username . '&feedformat=atom', false);

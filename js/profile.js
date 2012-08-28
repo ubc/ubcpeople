@@ -1,8 +1,9 @@
 //todo: tidy this
 jQuery(document).ready(function() {
 		var admin = true;
+		
 		/*
-		 *	Saves the person data. If provided, call a callback function after
+		 *	Saves the person data to the server via ajax. If provided, call a callback function after
 		 */
 		people_savePost = function(event, callback){
 			callback = callback || function(){};
@@ -19,14 +20,15 @@ jQuery(document).ready(function() {
 		}
 	
 	
+		/*
+		 *  Set up the image uploader
+		 */
 		people_initUploader = function(post_id){
 			var uploader = new qq.FileUploader({
 				element: document.getElementById('file-uploader-demo1'),
 				action: '/wp-admin/admin-ajax.php?action=people_upload_photo&id='+post_id,
 				onComplete: function(id, filename, responseJSON){	
 
-					//console.log(postData);
-					//jQuery('html').css("background-image", "url(/wp-content/uploads/people/"+post_id+"/"+responseJSON.filename+")");
 					jQuery.backstretch("/wp-content/uploads/people/"+post_id+"/"+responseJSON.filename);
 					postData.people.bg.url = responseJSON.filename;
 					postData.people.images.push(responseJSON.filename);
@@ -41,7 +43,6 @@ jQuery(document).ready(function() {
 		function convertLineBreaks(input_string){
 			return input_string.replace(/(\r\n|\r|\n)/g, "<br />");
 		}
-	
 		
 		
 		/*

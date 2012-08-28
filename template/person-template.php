@@ -44,8 +44,7 @@
 					
 					<?php 
 						
-						//$usermeta['social']  needs to be re-ordered with internal first and external second
-						
+						//todo: do this somewhere else
 						$internal_services = array();
 						$external_services = array();
 						foreach($usermeta['social'] as $service=>$service_username):
@@ -88,9 +87,10 @@
 				</div>
 			</div>
 			
-			<?php include 'social-overlay.php'; ?>
-		
-			<?php include 'admin-overlay.php'; ?>
+			<?php 
+				include 'social-overlay.php'; 	
+				include 'admin-overlay.php'; 
+			?>
 			
 			<span class="ajax-spinner" style="display:none;float:left;">Saving...</span>
 			

@@ -179,3 +179,16 @@ h2 a{
 		color:#666;
 		font-size:75%;
 	}
+	
+	#social-left-column{
+		width:180px;float:left;height:600px;background-color:#000;
+	}
+	
+	#social-main-column{
+		float:left; 
+		width:700px;
+	}
+	
+	#social-tabs li{
+		width:100%;;
+	}

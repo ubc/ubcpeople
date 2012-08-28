@@ -28,6 +28,8 @@ require 'include/adoy-php-oauth2/Client.php';
 require 'include/adoy-php-oauth2/GrantType/IGrantType.php';
 require 'include/adoy-php-oauth2/GrantType/AuthorizationCode.php';
 
+
+//See adding-more-services.txt for how additional services are defined right now
 include 'include/services/twitter.php';
 include 'include/services/ubc_blog.php';
 include 'include/services/ubc_wiki.php';
@@ -35,9 +37,10 @@ include 'include/services/wordpress.php';
 include 'include/services/facebook.php';
 include 'include/services/linkedin.php';
 
+
 /**
  * ubcpeople_get_available_services
- * The list of services that are available to add to a profile slug=>name
+ * Returns a list of services that are available to add to a profile slug=>name
  */
 function ubcpeople_get_available_services(){
 	return array(
@@ -55,6 +58,7 @@ function ubcpeople_get_available_services(){
 /**
  * ubcpeople_get_default_data
  * The default values for a new profile
+ * todo: move this somewhere else
  */
 function ubcpeople_get_default_data(){
 	return array(
@@ -93,6 +97,7 @@ function ubcpeople_get_default_data(){
 /**
  * ubcpeople_update_profile
  * Called when profile is updated via the backend edit-profile page, adds the ability to make a profile public and set a profile as homepage
+ * @param $user_id WordPress User ID of profile being updated
  */
 function ubcpeople_update_profile($user_id){
 	$user = get_user_by('id', $user_id);
@@ -222,7 +227,7 @@ function ubcpeople_include_template() {
 		wp_enqueue_script('jquery');
 		
 		//Scripts that only need to be included for profile editing
-		if( true ):
+		if( true ):	//todo: check here if the user can edit this profile
 			wp_enqueue_script('jquery-ui-draggable');
 			wp_enqueue_script('jquery-ui-resizable');
 			wp_enqueue_script('jquery-ui-sortable');
@@ -244,11 +249,7 @@ function ubcpeople_include_template() {
 		wp_enqueue_style("colorbox", plugins_url( 'css/colorbox.css', __FILE__ ));
 		wp_enqueue_style("ubcpeople", plugins_url( 'css/style.css', __FILE__ ));		
 		
-		wp_enqueue_style("people-jquery-ui", plugins_url( 'css/jquery-ui.css', __FILE__ ));	
-								
-						
-				
-			
+		wp_enqueue_style("people-jquery-ui", plugins_url( 'css/jquery-ui.css', __FILE__ ));		
 
     	include 'template/person-template.php';
     	exit;
@@ -275,7 +276,6 @@ function ubcpeople_update_post(){
 	
 	$social = $social_data;
 	
-	
 	//If the order of social icons has been changed, update it..
 	if($social['order']):
 		$order = $social['order'];
@@ -286,13 +286,11 @@ function ubcpeople_update_post(){
 		$social = $new_social;
 	endif;
 	
-	
 	$id = $_POST['id']; 
 	$post_data = array(
 		'ID' => $id,
 	);
 	
-	//wp_update_user( $post_data );
 	update_user_meta($id, 'people', $people);
 	update_user_meta($id, 'social', $social);
 	
@@ -321,15 +319,15 @@ function ubcpeople_add_service($person_name, $service_name, $service_username){
 	$social = get_user_meta($user_id, 'social', true);
 	$social[$service_name] = $service_username;
 	update_user_meta($user_id, 'social', $social);
-
 	
 }
-
 
 
 /**
  *	ubcpeople_remove_service
  *	Remove a service from a profile
+ *  @param $person_name The WP username of the profile we're working with
+ *  @param $service_name The service to delete from the profile
  */
 function ubcpeople_remove_service($person_name, $service_name){
 
@@ -354,9 +352,6 @@ function ubcpeople_remove_service($person_name, $service_name){
  */
 function ubcpeople_is_valid_service($service_slug){
 	$social_array = ubcpeople_get_available_services();
-	
-	//to do: this should be passed a slug, so all this function should need to do is verify that it exists in the array
-	
 	if(array_key_exists($service_slug, $social_array)):
 		return true;
 	endif;
@@ -386,7 +381,9 @@ function ubcpeople_get_service_parameters($service_slug){
 /**
  * ubcpeople_display_service
  * Calls the function to display the content for a particular service (in the overlay)
- *
+ * @param $service_slug
+ * @param $person_id The Wordpress user ID of the service to be displayed
+ * @param $service_username The person's username on service being displayed
  */
 function ubcpeople_display_service($service_slug, $person_id, $service_username){
 	if( ubcpeople_is_valid_service( $service_slug ) ):

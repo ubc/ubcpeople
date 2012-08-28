@@ -3,6 +3,8 @@
  *	Settings Page
  */
 
+//todo: if we're doing a network-wide install on a wpmu site then these settings should probably be at the network level
+
 if( is_admin() ):
 	add_action( 'admin_menu', 'ubcpeople_admin_menu' );
 	add_action( 'admin_init', 'ubcpeople_register_settings' );

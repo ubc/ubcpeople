@@ -1,27 +1,10 @@
-<style>
-	#social-left-column{
-		width:180px;float:left;height:600px;background-color:#000;
-	}
-	
-	#social-main-column{
-		float:left; 
-		width:700px;
-	}
-	
-	#social-tabs li{
-		width:100%;;
-	}
-</style>
-
-
 <div id="social-overlay" style="display:none;">
 	<div id="social-inline-content">
 	
 		<div id="social-tabs">
 		
 			
-			<!--Sidebar tabs Area
-			-->
+			<!--Sidebar tabs Area-->
 			<div id="social-left-column">
 				
 				<div style="color:#fff;margin:10px;">@ubc</div>
@@ -36,7 +19,7 @@
 							$count++;
 						endforeach;
 						
-						//jquery ui tabs works with these list items, so we'll output these ones here even though they're no going to be displayed this way
+						//jquery ui tabs relies with these list items, so we'll output these ones here even though they're not going to be displayed this way
 						foreach( $external_services as $service=>$service_username ):
 							echo '<li style="display:none;"><a href="#tab-'.str_replace(array(' ','.'),'-', $service).'"></a></li>';
 						endforeach;

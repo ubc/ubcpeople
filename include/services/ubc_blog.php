@@ -25,7 +25,9 @@ function ubcpeople_ubc_blog($person_id, $service_username){
 }
 
 
-
+/**
+ *	Get the XML feed from UBC blogs
+ */
 function ubcpeople_ubc_blog_get_data($username){
 	if(!($xml_string = get_transient('blogs_'.$username) ) ):
 		//temporary. maybe.
