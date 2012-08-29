@@ -5,3 +5,5 @@ Still very much under development.
 Person profiles are currently accessed at www.example.com/?person=username
 
 Nothing shows up if the user hasn't enabled their public profile (controlled from the default wordpress edit profile screen)
+
+From the Dashboard, the settings page is accessed at Settings->People. 

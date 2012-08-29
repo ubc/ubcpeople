@@ -15,13 +15,13 @@ function ubcpeople_linkedin($person_id, $service_username){
 	?>
 	
 	<div class="social-header">
-		<img src="<?php echo $data['picture']; ?>" style="float:right;" />
-		<h2><a href="http://facebook.com/<?php echo $data['info']['id']; ?>"><?php echo $data['info']['name']; ?> on Facebook</a></h2>
+		
+		<h2>LinkedIn</h2>
 	</div>
 	
 	<div class="social-body">
 		<p>
-			Current Status: <?php echo $data['feed']['data'][0]['message']; ?>
+			to do: display linkedin data here.
 		</p>
 	</div>
 	
@@ -36,9 +36,6 @@ function ubcpeople_linkedin_get_data($person_id, $service_username){
 		$linkedin_access_token = get_user_meta($person_id, "linkedin_access_token", true);
 		if($linkedin_access_token):	
 		
-			//$data['info'] = json_decode(file_get_contents('https://graph.facebook.com/'.$service_username.'?access_token='.$fb_access_token),true);
-			//$data['feed'] = json_decode(file_get_contents('https://graph.facebook.com/fql?q=SELECT+message,time+FROM+status+WHERE+uid='.$data['info']['id'].'+LIMIT+10&access_token='.$fb_access_token),true);
-			//$data['picture'] = 'https://graph.facebook.com/'.$service_username.'/picture?type=normal';
 			set_transient('linkedin_'.$service_username, $data, 60*60);
 			
 		else:	//If not, we can't really make the request
@@ -54,8 +51,11 @@ function ubcpeople_linkedin_get_access_code($url, $username){
 
 	if( isset($_GET['act']) && $_GET['act'] == 'add-linkedin' ):
 	
-		//Information the OAuth2 script needs
+		/*
+		todo: Figure this out
 		
+		Linked in uses a different version of OAuth so there's a possibility this library won't be suitable here
+		*/
 		
 		$user = get_user_by('login', $username);
 		
@@ -74,7 +74,7 @@ function ubcpeople_linkedin_get_access_code($url, $username){
 		if (!isset($_GET['code']))
 		{
 			//STEP 1:
-			//redirect the user to the facebook auth page.
+			//redirect the user to the linkedin auth page.
 			$auth_url = $client->getAuthenticationUrl($authorization_endpoint, $redirect_url);
 			header('Location: ' . $auth_url);
 			die('Redirect');
@@ -98,30 +98,6 @@ function ubcpeople_linkedin_get_access_code($url, $username){
 		
 	endif;
 
-/*
-
-	$user = get_user_by('login', $username);
-	return;
-	if(isset($_GET['code']) && $_GET['app'] == 'linkedin'):
-		$options = get_option("people_settings");
-		//Exchange the code for the access token
-		$response =  file_get_contents('https://api.linkedin.com/uas/oauth/accessToken?client_id=' . $options['linkedin_key'] . '&redirect_uri=' . $url . '&client_secret=' . $options['linkedin_secret'] . '&code=' . $_GET['code']);
-		$parsed_data = array();
-		parse_str($response, $parsed_data);
-		
-		//store the access token
-		update_user_meta($user->ID, 'linkedin_access_token', $parsed_data['access_token']);
-		
-		//Grab the user details so we have their ID/username
-		$linkedin_user_details = json_decode(file_get_contents('http://api.linkedin.com/v1/people/~?access_token='. $parsed_data['access_token']),true);
-		print_r($linkedin_user_details);
-		die();
-		ubcpeople_add_service($username, 'linkedin', $linkedin_user_details['id']);
-		
-		//temporary solution
-		echo '<meta http-equiv="refresh" content="0;url='.ubcpeople_get_person_url().'" />';
-		exit;
-	endif;*/
 }
 
 

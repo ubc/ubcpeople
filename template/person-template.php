@@ -13,11 +13,9 @@
 	<body>
 	
 		<?php
-		//If user exists and has profile set to public
+		//If user exists and has a public profile 
 		$user = get_user_by('login', $_REQUEST['person']);
-		if( $user && get_user_meta($user->ID, "public-profile", true)=='true'): 
-		
-			
+		if( $user && get_user_meta($user->ID, "public-profile", true)=='true'): 		
 		
 			$usermeta = ubcpeople_get_user_info ($user->ID);
 			?>	
@@ -44,7 +42,7 @@
 					
 					<?php 
 						
-						//todo: do this somewhere else
+						//todo: seperate these elsewhere
 						$internal_services = array();
 						$external_services = array();
 						foreach($usermeta['social'] as $service=>$service_username):
@@ -75,15 +73,6 @@
 						endif;
 					?>
 					
-					
-					
-					<?php
-					
-						/* if(is_front_page() && empty($_GET['person'])):
-							echo '<div id="next"><a href="blag">[Todo: Enter Site Button]</a></div>';
-						endif;*/
-					?>
-					
 				</div>
 			</div>
 			
@@ -94,8 +83,9 @@
 			
 			<span class="ajax-spinner" style="display:none;float:left;">Saving...</span>
 			
+		<?php else: ?>
+			Nothing here
 		<?php endif; ?>
-		
 		<?php wp_footer(); ?>
 	</body>
 </html>

@@ -171,9 +171,9 @@
 					<table id="manage-services">
 						<thead>
 						<tr>
-							<th style="width:200px;">Active Services</th>
+							<th style="width:240px;">Active Services</th>
 							<th style="width:150px;">Controls</th>
-							<th style="width:32px;">Featured</th>
+							<!--<th style="width:32px;">Featured</th>-->
 						</tr>
 						</thead>
 						<tbody>
@@ -184,7 +184,7 @@
 							<tr id="row-<?php echo $service_slug; ?>">
 								<td><?php echo $available_services[$service_slug]; ?></td>
 								<td><a class="remove-service" href="<?php echo ubcpeople_get_person_url($usermeta['login'], array('remove-service'=>$service_slug) ); ?>">Remove</a></td>
-								<td><input type="checkbox" /></td>
+								<!--<td><input type="checkbox" /></td>-->
 							</tr>	
 							<?php 
 						endforeach; 
@@ -194,7 +194,7 @@
 					
 					<table id="available-services">
 						<tr>
-							<th style="width:200px;">Available Services</th>
+							<th style="width:240px;">Available Services</th>
 						</tr>
 						<?php
 						foreach($inactive as $service):										

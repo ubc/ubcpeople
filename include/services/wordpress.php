@@ -20,8 +20,8 @@ function ubcpeople_wordpress($person_id, $service_username){
 
 
 function ubcpeople_wordpress_get_data($username){
-	//temporary. maybe.
 	if(!($xml_string = get_transient('wordpress_'.$username) ) ):	
+	
 		$opts = array(
 			'http'=>array(
 				'header'=>'Accept-Encoding: \r\n',
