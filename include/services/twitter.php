@@ -49,11 +49,11 @@ function ubcpeople_twitter_get_feed($username){
 
 
 
-function ubcpeople_twitter_get_icon(){
+function ubcpeople_twitter_get_parameters(){
 	return array(
-		'url'=>'twitter.png',
-		'id'=>'icon-twitter',
-		'alt'=>'Twitter',
+		'icon-url'=>'twitter.png',
+		'icon-id'=>'icon-twitter',
+		'icon-alt'=>'Twitter',
 		'category'=>'external',
 	);
 }
